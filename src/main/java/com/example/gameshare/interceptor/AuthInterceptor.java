@@ -39,9 +39,11 @@ public class AuthInterceptor implements HandlerInterceptor {
                 response.sendRedirect(request.getContextPath() + "/login?source=" + path); // Add source for potential redirect back
                 return false;
             }
-            boolean isAdmin = currentUser.get角色列表() != null &&
-                              currentUser.get角色列表().stream()
-                                         .anyMatch(role -> ADMIN_ROLE_NAME.equals(role.get角色名称()));
+            boolean isAdmin = false;
+            if (currentUser.getRoles() != null) {
+                isAdmin = currentUser.getRoles().stream()
+                                     .anyMatch(role -> ADMIN_ROLE_NAME.equals(role.getName()));
+            }
             if (!isAdmin) {
                 response.sendRedirect(request.getContextPath() + "/access-denied");
                 return false;

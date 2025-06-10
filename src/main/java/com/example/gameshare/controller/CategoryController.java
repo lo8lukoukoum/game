@@ -64,7 +64,7 @@ public class CategoryController {
     }
 
     @GetMapping("/edit/{id}") // Maps to /admin/categories/edit/{id}
-    public String showEditCategoryForm(@PathVariable("id") Integer id, Model model, HttpSession session) {
+    public String showEditCategoryForm(@PathVariable("id") Integer id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         if (!isAdmin(session)) {
             return "redirect:/login";
         }
