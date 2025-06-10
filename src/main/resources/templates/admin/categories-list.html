@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>分类管理</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>分类管理</h1>
+        <a th:href="@{/admin/categories/new}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> 添加新分类
+        </a>
+    </div>
+    <hr>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>分类名称</th>
+                <th>描述</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.id}">1</td>
+                <td th:text="${category.分类名称}">分类示例</td>
+                <td th:text="${#strings.abbreviate(category.描述, 100)}">描述示例...</td>
+                <td>
+                    <a th:href="@{/admin/categories/edit/{id}(id=${category.id})}" class="btn btn-primary btn-sm">编辑</a>
+                    <a th:href="@{/admin/categories/delete/{id}(id=${category.id})}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('确定要删除这个分类吗？这可能会影响到属于此分类的游戏。');">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${categories.isEmpty()}" class="alert alert-info">
+        <p>目前没有游戏分类。</p>
+    </div>
+</div>
+
+</body>
+</html>

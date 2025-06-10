@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>首页</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4" th:src="@{/images/logo_placeholder.png}" alt="Logo" width="72" height="57"> <!-- Placeholder logo -->
+        <h1 class="display-5 fw-bold">欢迎来到游戏分享平台</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">在这里，您可以发现新游戏，分享您的游戏体验，并与其他游戏爱好者交流。探索我们的游戏库，阅读评论，并加入社区！</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a th:href="@{/games}" type="button" class="btn btn-primary btn-lg px-4 gap-3">浏览游戏</a>
+                <a th:href="@{/register}" type="button" class="btn btn-outline-secondary btn-lg px-4" th:if="${session.loggedInUser == null}">立即注册</a>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <h2>热门游戏</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${!games.isEmpty()}">
+        <!-- Loop through games passed from HomeController -->
+        <div class="col" th:each="game : ${games.size() > 6 ? games.subList(0,6) : games}"> <!-- Show max 6 games -->
+            <div class="card h-100">
+                <img th:src="${game.图片链接 != null && !game.图片链接.isEmpty() ? game.图片链接 : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.游戏名称}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${game.游戏名称}">游戏名称</h5>
+                    <p class="card-text" th:text="${game.游戏分类 != null ? game.游戏分类.分类名称 : '无分类'}">分类</p>
+                    <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-primary">查看详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${games.isEmpty()}">
+        <p>目前没有游戏可展示。</p>
+    </div>
+
+     <!-- Placeholder for logo and game images -->
+    <!-- Create /static/images/logo_placeholder.png and /static/images/game_placeholder.png -->
+
+</div>
+
+</body>
+</html>

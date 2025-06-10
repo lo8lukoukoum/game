@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>游戏列表</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>所有游戏</h1>
+        <!-- Search Bar -->
+        <form class="d-flex" th:action="@{/games/search}" method="get">
+            <input class="form-control me-2" type="search" name="keyword" placeholder="搜索游戏..." aria-label="Search" th:value="${keyword}">
+            <button class="btn btn-outline-success" type="submit">搜索</button>
+        </form>
+    </div>
+
+    <!-- Category Filter (Optional - Basic Example) -->
+    <!--
+    <div class="mb-3">
+        <label for="categoryFilter" class="form-label">按分类筛选:</label>
+        <select class="form-select" id="categoryFilter" onchange="location = this.value;">
+            <option value="">所有分类</option>
+            <option th:each="cat : ${categories}" th:value="@{/games/category/{id}(id=${cat.id})}" th:text="${cat.分类名称}" th:selected="${selectedCategoryId == cat.id}">分类</option>
+        </select>
+    </div>
+    -->
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" th:if="${!games.isEmpty()}">
+        <div class="col" th:each="game : ${games}">
+            <div class="card h-100 shadow-sm">
+                <a th:href="@{/games/{id}(id=${game.id})}">
+                    <img th:src="${game.图片链接 != null && !game.图片链接.isEmpty() ? game.图片链接 : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.游戏名称}" style="height: 200px; object-fit: cover;">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a th:href="@{/games/{id}(id=${game.id})}" th:text="${game.游戏名称}" class="text-decoration-none">游戏名称</a>
+                    </h5>
+                    <p class="card-text text-muted" th:text="${game.游戏分类 != null ? game.游戏分类.分类名称 : '无分类'}">分类</p>
+                </div>
+                <div class="card-footer text-center">
+                     <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-primary btn-sm">查看详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-info" th:if="${games.isEmpty()}">
+        <p>没有找到符合条件的游戏。</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>我的收藏</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <h1>我的收藏</h1>
+    <hr>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" th:if="${!collections.isEmpty()}">
+        <div class="col" th:each="collection : ${collections}">
+            <div class="card h-100 shadow-sm">
+                <a th:href="@{/games/{id}(id=${collection.游戏.id})}">
+                    <img th:src="${collection.游戏.图片链接 != null && !collection.游戏.图片链接.isEmpty() ? collection.游戏.图片链接 : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${collection.游戏.游戏名称}" style="height: 200px; object-fit: cover;">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a th:href="@{/games/{id}(id=${collection.游戏.id})}" th:text="${collection.游戏.游戏名称}" class="text-decoration-none">游戏名称</a>
+                    </h5>
+                    <p class="card-text text-muted">
+                        收藏于: <span th:text="${#temporals.format(collection.收藏时间, 'yyyy-MM-dd HH:mm')}">收藏时间</span>
+                    </p>
+                </div>
+                <div class="card-footer text-center">
+                    <form th:action="@{/collections/remove/{gameId}(gameId=${collection.游戏.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('确定要从收藏中移除吗？');">移除收藏</button>
+                    </form>
+                    <a th:href="@{/games/{id}(id=${collection.游戏.id})}" class="btn btn-primary btn-sm ms-2">查看详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-info" th:if="${collections.isEmpty()}">
+        <p>您还没有收藏任何游戏。快去 <a th:href="@{/games}">游戏列表</a> 看看吧！</p>
+    </div>
+</div>
+
+</body>
+</html>

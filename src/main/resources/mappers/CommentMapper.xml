@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.gameshare.repository.CommentMapper">
+
+    <resultMap id="CommentResultMap" type="com.example.gameshare.model.Comment">
+        <id property="id" column="c_id"/>
+        <result property="评论内容" column="c_评论内容"/>
+        <result property="用户id" column="c_用户id"/>
+        <result property="游戏id" column="c_游戏id"/>
+        <result property="创建时间" column="c_创建时间"/>
+        <result property="更新时间" column="c_更新时间"/>
+        <association property="用户" javaType="com.example.gameshare.model.User">
+            <id property="id" column="u_id"/>
+            <result property="用户名" column="u_用户名"/>
+            <result property="邮箱" column="u_邮箱"/>
+        </association>
+    </resultMap>
+
+    <sql id="commentColumns">
+        c.id as c_id,
+        c.评论内容 as c_评论内容,
+        c.用户id as c_用户id,
+        c.游戏id as c_游戏id,
+        c.创建时间 as c_创建时间,
+        c.更新时间 as c_更新时间
+    </sql>
+
+    <sql id="userBasicColumns">
+        u.id as u_id,
+        u.用户名 as u_用户名,
+        u.邮箱 as u_邮箱
+    </sql>
+
+    <select id="findById" resultMap="CommentResultMap">
+        SELECT
+          <include refid="commentColumns"/>,
+          <include refid="userBasicColumns"/>
+        FROM 评论 c
+        LEFT JOIN 用户 u ON c.用户id = u.id
+        WHERE c.id = #{id}
+    </select>
+
+    <select id="findByGameId" resultMap="CommentResultMap">
+        SELECT
+          <include refid="commentColumns"/>,
+          <include refid="userBasicColumns"/>
+        FROM 评论 c
+        LEFT JOIN 用户 u ON c.用户id = u.id
+        WHERE c.游戏id = #{gameId}
+        ORDER BY c.创建时间 DESC
+    </select>
+
+    <select id="findByUserId" resultMap="CommentResultMap">
+        SELECT
+          <include refid="commentColumns"/>,
+          <include refid="userBasicColumns"/>
+        FROM 评论 c
+        LEFT JOIN 用户 u ON c.用户id = u.id
+        WHERE c.用户id = #{userId}
+        ORDER BY c.创建时间 DESC
+    </select>
+
+    <insert id="insert" parameterType="com.example.gameshare.model.Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO 评论 (评论内容, 用户id, 游戏id, 创建时间, 更新时间)
+        VALUES (#{评论内容}, #{用户id}, #{游戏id}, #{创建时间, jdbcType=TIMESTAMP}, #{更新时间, jdbcType=TIMESTAMP})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM 评论 WHERE id = #{id}
+    </delete>
+
+</mapper>

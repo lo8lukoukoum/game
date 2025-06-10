@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${game.游戏名称} + ' - 详情'">游戏详情</title>
+    <style>
+        .rating-stars .star {
+            font-size: 1.5rem;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .rating-stars .star.selected,
+        .rating-stars .star:hover,
+        .rating-stars .star:hover ~ .star { /* Highlight stars on hover */
+            color: #ffc107; /* Bootstrap warning color (yellow) */
+        }
+    </style>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="row">
+        <!-- Game Info Column -->
+        <div class="col-md-8">
+            <h1 th:text="${game.游戏名称}">游戏名称</h1>
+            <hr>
+            <img th:src="${game.图片链接 != null && !game.图片链接.isEmpty() ? game.图片链接 : '/images/game_placeholder.png'}" class="img-fluid rounded mb-3" th:alt="${game.游戏名称}" style="max-height: 400px; width:auto;">
+            <p><strong>分类:</strong> <a th:href="@{/games/category/{id}(id=${game.游戏分类.id})}" th:text="${game.游戏分类.分类名称}">分类名称</a></p>
+            <p><strong>发行日期:</strong> <span th:text="${#temporals.format(game.发行日期, 'yyyy-MM-dd')}">YYYY-MM-DD</span></p>
+            <p><strong>描述:</strong></p>
+            <p style="white-space: pre-wrap;" th:text="${game.描述}">游戏描述内容...</p>
+
+            <!-- Collection Button -->
+             <div class="my-3" th:if="${session.loggedInUser != null}">
+                <form th:if="${!isCollected}" th:action="@{/collections/add/{gameId}(gameId=${game.id})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-success"><i class="bi bi-bookmark-plus"></i> 添加到收藏</button>
+                </form>
+                <form th:if="${isCollected}" th:action="@{/collections/remove/{gameId}(gameId=${game.id})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-bookmark-dash"></i> 从收藏移除</button>
+                </form>
+            </div>
+             <div class="my-3" th:unless="${session.loggedInUser != null}">
+                 <p><a th:href="@{/login}">登录</a>后即可收藏游戏。</p>
+             </div>
+
+
+        </div>
+
+        <!-- Rating and Comments Column -->
+        <div class="col-md-4">
+            <!-- Average Rating Display -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">游戏评分</h5>
+                    <p class="card-text display-6" th:text="${averageRating > 0.0 ? #numbers.formatDecimal(averageRating, 1, 1) : '暂无评分'}">4.5</p>
+                    <p class="text-muted" th:text="'基于 ' + ${ratingsCount} + '份评分'">基于 X 份评分</p>
+                </div>
+            </div>
+
+            <!-- User Rating Form -->
+            <div class="card mb-3" th:if="${session.loggedInUser != null}">
+                <div class="card-body">
+                    <h5 class="card-title">评价这款游戏</h5>
+                    <form th:action="@{/games/{gameId}/ratings(gameId=${game.id})}" th:object="${newRating}" method="post">
+                        <div class="mb-3 rating-stars">
+                            <input type="hidden" name="分数" id="ratingScore" th:value="${userRating > 0 ? userRating : ''}" required>
+                            <span class="star" data-value="1" th:classappend="${userRating >= 1 ? 'selected' : ''}">★</span>
+                            <span class="star" data-value="2" th:classappend="${userRating >= 2 ? 'selected' : ''}">★</span>
+                            <span class="star" data-value="3" th:classappend="${userRating >= 3 ? 'selected' : ''}">★</span>
+                            <span class="star" data-value="4" th:classappend="${userRating >= 4 ? 'selected' : ''}">★</span>
+                            <span class="star" data-value="5" th:classappend="${userRating >= 5 ? 'selected' : ''}">★</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">提交评分</button>
+                    </form>
+                </div>
+            </div>
+             <div class="card mb-3" th:unless="${session.loggedInUser != null}">
+                <div class="card-body">
+                     <p><a th:href="@{/login}">登录</a>后即可评价游戏。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Comments Section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>评论区</h3>
+            <!-- New Comment Form -->
+            <div th:if="${session.loggedInUser != null}">
+                <form th:action="@{/games/{gameId}/comments(gameId=${game.id})}" th:object="${newComment}" method="post" class="mb-4">
+                    <div class="mb-3">
+                        <label for="commentContent" class="form-label">发表评论</label>
+                        <textarea class="form-control" id="commentContent" rows="3" th:field="*{评论内容}" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">提交评论</button>
+                </form>
+            </div>
+            <div th:unless="${session.loggedInUser != null}" class="mb-4">
+                <p><a th:href="@{/login}">登录</a>后即可发表评论。</p>
+            </div>
+
+            <!-- Existing Comments -->
+            <div th:if="${!comments.isEmpty()}">
+                <div class="card mb-3" th:each="comment : ${comments}">
+                    <div class="card-body">
+                        <p class="card-text" th:text="${comment.评论内容}">评论内容...</p>
+                        <footer class="blockquote-footer">
+                            <span th:text="${comment.用户 != null ? comment.用户.用户名 : '匿名用户'}">用户</span> 于
+                            <span th:text="${#temporals.format(comment.创建时间, 'yyyy-MM-dd HH:mm')}">评论时间</span>
+                            <a th:if="${session.loggedInUser != null && session.loggedInUser.get角色列表().stream().anyMatch(role -> role.get角色名称().equals('管理员'))}"
+                               th:href="@{/admin/comments/delete/{id}(id=${comment.id})}"
+                               class="btn btn-danger btn-sm float-end"
+                               onclick="return confirm('确定要删除这条评论吗？');">删除</a>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${comments.isEmpty()}">
+                <p>还没有评论，快来抢沙发吧！</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stars = document.querySelectorAll('.rating-stars .star');
+            const ratingScoreInput = document.getElementById('ratingScore');
+
+            stars.forEach(star => {
+                star.addEventListener('click', function () {
+                    const value = this.getAttribute('data-value');
+                    ratingScoreInput.value = value;
+                    stars.forEach(s => {
+                        s.classList.toggle('selected', parseInt(s.getAttribute('data-value')) <= parseInt(value));
+                    });
+                });
+                // Hover effect (optional, can be pure CSS too)
+                // Function to update star visuals based on a score
+                function updateStarsVisual(score) {
+                    stars.forEach(s => {
+                        const starValue = parseInt(s.getAttribute('data-value'));
+                        if (starValue <= score) {
+                            s.classList.add('selected');
+                            s.style.color = '#ffc107'; // Ensure style matches class
+                        } else {
+                            s.classList.remove('selected');
+                            s.style.color = '#ccc'; // Ensure style matches class
+                        }
+                    });
+                }
+
+                stars.forEach(star => {
+                    star.addEventListener('click', function () {
+                        const value = this.getAttribute('data-value');
+                        ratingScoreInput.value = value;
+                        updateStarsVisual(parseInt(value));
+                    });
+
+                    star.addEventListener('mouseover', function () {
+                        const hoverValue = parseInt(this.getAttribute('data-value'));
+                        stars.forEach((s, index) => { // Use index for 0-based comparison to hoverValue
+                            if (index < hoverValue) {
+                                s.style.color = '#ffdb58'; // Brighter yellow for hover
+                            } else {
+                                s.style.color = '#ccc';
+                            }
+                        });
+                    });
+
+                    star.addEventListener('mouseout', function () {
+                        // On mouseout, revert to the actual current rating stored in the input
+                        updateStarsVisual(parseInt(ratingScoreInput.value) || 0);
+                    });
+                });
+
+                // Initial setup on page load
+                updateStarsVisual(parseInt(ratingScoreInput.value) || 0);
+            });
+        });
+    </script>
+
+</div>
+
+</body>
+</html>

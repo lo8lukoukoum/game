@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>用户注册</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2>用户注册</h2>
+            <form th:action="@{/register}" th:object="${user}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">用户名</label>
+                    <input type="text" class="form-control" id="username" th:field="*{用户名}" required>
+                    <!-- Example for displaying field-specific errors if using Spring Validation later -->
+                    <!-- <div class="text-danger" th:if="${#fields.hasErrors('用户名')}" th:errors="*{用户名}"></div> -->
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">密码</label>
+                    <input type="password" class="form-control" id="password" th:field="*{密码}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">邮箱</label>
+                    <input type="email" class="form-control" id="email" th:field="*{邮箱}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">注册</button>
+                <p class="mt-3">
+                    已有账户? <a th:href="@{/login}">立即登录</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

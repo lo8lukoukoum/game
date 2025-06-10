@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">游戏分享平台</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/games}">游戏列表</a>
+                </li>
+                <!-- User-specific links -->
+                <li class="nav-item" th:if="${session.loggedInUser != null}">
+                    <a class="nav-link" th:href="@{/my-collections}">我的收藏</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+                <!-- Admin dropdown -->
+                <li class="nav-item dropdown" th:if="${session.loggedInUser != null && session.loggedInUser.get角色列表().stream().anyMatch(role -> role.get角色名称().equals('管理员'))}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarAdminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        管理员后台
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarAdminDropdown">
+                        <li><a class="dropdown-item" th:href="@{/admin/games}">游戏管理</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/categories}">分类管理</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/users}">用户管理</a></li>
+                        <!-- Add other admin links here e.g., comments if a dedicated page exists -->
+                    </ul>
+                </li>
+
+                <!-- User/Login/Register links -->
+                <li class="nav-item dropdown" th:if="${session.loggedInUser != null}">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                       th:text="${session.loggedInUser.用户名}">
+                        用户
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
+                        <li><a class="dropdown-item" th:href="@{/profile}">个人资料</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}">注销</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" th:if="${session.loggedInUser == null}">
+                    <a class="nav-link" th:href="@{/login}">登录</a>
+                </li>
+                <li class="nav-item" th:if="${session.loggedInUser == null}">
+                    <a class="nav-link" th:href="@{/register}">注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

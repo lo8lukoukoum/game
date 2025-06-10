@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.gameshare.repository.CollectionMapper">
+
+    <resultMap id="CollectionResultMap" type="com.example.gameshare.model.Collection">
+        <id property="id" column="coll_id"/>
+        <result property="用户id" column="coll_用户id"/>
+        <result property="游戏id" column="coll_游戏id"/>
+        <result property="收藏时间" column="coll_收藏时间"/>
+        <association property="用户" javaType="com.example.gameshare.model.User">
+            <id property="id" column="u_id"/>
+            <result property="用户名" column="u_用户名"/>
+        </association>
+        <association property="游戏" javaType="com.example.gameshare.model.Game">
+            <id property="id" column="g_id"/>
+            <result property="游戏名称" column="g_游戏名称"/>
+            <result property="图片链接" column="g_图片链接"/>
+        </association>
+    </resultMap>
+
+    <sql id="collectionColumns">
+        coll.id as coll_id,
+        coll.用户id as coll_用户id,
+        coll.游戏id as coll_游戏id,
+        coll.收藏时间 as coll_收藏时间
+    </sql>
+
+    <sql id="userBasicColumns">
+        u.id as u_id,
+        u.用户名 as u_用户名
+    </sql>
+
+    <sql id="gameBasicColumns">
+        g.id as g_id,
+        g.游戏名称 as g_游戏名称,
+        g.图片链接 as g_图片链接
+    </sql>
+
+    <select id="findByUserId" resultMap="CollectionResultMap">
+        SELECT
+          <include refid="collectionColumns"/>,
+          <include refid="userBasicColumns"/>,
+          <include refid="gameBasicColumns"/>
+        FROM 收藏 coll
+        LEFT JOIN 用户 u ON coll.用户id = u.id
+        LEFT JOIN 游戏 g ON coll.游戏id = g.id
+        WHERE coll.用户id = #{userId}
+        ORDER BY coll.收藏时间 DESC
+    </select>
+
+    <select id="findByUserIdAndGameId" resultMap="CollectionResultMap">
+        SELECT
+          <include refid="collectionColumns"/>,
+          <include refid="userBasicColumns"/>,
+          <include refid="gameBasicColumns"/>
+        FROM 收藏 coll
+        LEFT JOIN 用户 u ON coll.用户id = u.id
+        LEFT JOIN 游戏 g ON coll.游戏id = g.id
+        WHERE coll.用户id = #{userId} AND coll.游戏id = #{gameId}
+    </select>
+
+    <insert id="insert" parameterType="com.example.gameshare.model.Collection" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO 收藏 (用户id, 游戏id, 收藏时间)
+        VALUES (#{用户id}, #{游戏id}, #{收藏时间, jdbcType=TIMESTAMP})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM 收藏 WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByUserIdAndGameId">
+        DELETE FROM 收藏 WHERE 用户id = #{userId} AND 游戏id = #{gameId}
+    </delete>
+
+</mapper>

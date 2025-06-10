@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.gameshare.repository.GameMapper">
+
+    <resultMap id="GameResultMap" type="com.example.gameshare.model.Game">
+        <id property="id" column="g_id"/>
+        <result property="游戏名称" column="g_游戏名称"/>
+        <result property="描述" column="g_描述"/>
+        <result property="发行日期" column="g_发行日期"/>
+        <result property="图片链接" column="g_图片链接"/>
+        <result property="分类id" column="g_分类id"/>
+        <result property="创建时间" column="g_创建时间"/>
+        <result property="更新时间" column="g_更新时间"/>
+        <association property="游戏分类" javaType="com.example.gameshare.model.Category" resultMap="com.example.gameshare.repository.CategoryMapper.CategoryResultMap" columnPrefix="cat_"/>
+    </resultMap>
+
+    <sql id="gameColumns">
+        g.id as g_id,
+        g.游戏名称 as g_游戏名称,
+        g.描述 as g_描述,
+        g.发行日期 as g_发行日期,
+        g.图片链接 as g_图片链接,
+        g.分类id as g_分类id,
+        g.创建时间 as g_创建时间,
+        g.更新时间 as g_更新时间
+    </sql>
+
+    <sql id="categoryColumns">
+        c.id as cat_id,
+        c.分类名称 as cat_分类名称,
+        c.描述 as cat_描述,
+        c.创建时间 as cat_创建时间,
+        c.更新时间 as cat_更新时间
+    </sql>
+
+    <select id="findById" resultMap="GameResultMap">
+        SELECT
+          <include refid="gameColumns"/>,
+          <include refid="categoryColumns"/>
+        FROM 游戏 g
+        LEFT JOIN 游戏分类 c ON g.分类id = c.id
+        WHERE g.id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="GameResultMap">
+        SELECT
+          <include refid="gameColumns"/>,
+          <include refid="categoryColumns"/>
+        FROM 游戏 g
+        LEFT JOIN 游戏分类 c ON g.分类id = c.id
+        ORDER BY g.id
+    </select>
+
+    <select id="findByCategoryId" resultMap="GameResultMap">
+        SELECT
+          <include refid="gameColumns"/>,
+          <include refid="categoryColumns"/>
+        FROM 游戏 g
+        LEFT JOIN 游戏分类 c ON g.分类id = c.id
+        WHERE g.分类id = #{categoryId}
+        ORDER BY g.id
+    </select>
+
+    <insert id="insert" parameterType="com.example.gameshare.model.Game" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO 游戏 (游戏名称, 描述, 发行日期, 图片链接, 分类id, 创建时间, 更新时间)
+        VALUES (#{游戏名称}, #{描述}, #{发行日期, jdbcType=DATE}, #{图片链接}, #{分类id}, #{创建时间, jdbcType=TIMESTAMP}, #{更新时间, jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="update" parameterType="com.example.gameshare.model.Game">
+        UPDATE 游戏
+        <set>
+            <if test="游戏名称 != null">游戏名称 = #{游戏名称},</if>
+            <if test="描述 != null">描述 = #{描述},</if>
+            <if test="发行日期 != null">发行日期 = #{发行日期, jdbcType=DATE},</if>
+            <if test="图片链接 != null">图片链接 = #{图片链接},</if>
+            <if test="分类id != null">分类id = #{分类id},</if>
+            <if test="更新时间 != null">更新时间 = #{更新时间, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM 游戏 WHERE id = #{id}
+    </delete>
+
+    <select id="search" resultMap="GameResultMap">
+        SELECT
+          <include refid="gameColumns"/>,
+          <include refid="categoryColumns"/>
+        FROM 游戏 g
+        LEFT JOIN 游戏分类 c ON g.分类id = c.id
+        WHERE g.游戏名称 LIKE CONCAT('%', #{keyword}, '%')
+           OR g.描述 LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY g.id
+    </select>
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.gameshare.repository.RoleMapper">
+
+    <resultMap id="RoleResultMap" type="com.example.gameshare.model.Role">
+        <id property="id" column="id"/>
+        <result property="角色名称" column="角色名称"/>
+    </resultMap>
+
+    <select id="findById" resultMap="RoleResultMap">
+        SELECT id, 角色名称 FROM 角色 WHERE id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="RoleResultMap">
+        SELECT id, 角色名称 FROM 角色 WHERE 角色名称 = #{roleName}
+    </select>
+
+    <insert id="insert" parameterType="com.example.gameshare.model.Role" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO 角色 (角色名称) VALUES (#{角色名称})
+    </insert>
+
+    <select id="findAll" resultMap="RoleResultMap">
+        SELECT id, 角色名称 FROM 角色 ORDER BY id
+    </select>
+
+</mapper>
