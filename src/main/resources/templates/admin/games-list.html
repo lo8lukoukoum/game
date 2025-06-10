@@ -29,9 +29,9 @@
         <tbody>
             <tr th:each="game : ${games}">
                 <td th:text="${game.id}">1</td>
-                <td th:text="${game.游戏名称}">游戏示例</td>
-                <td th:text="${game.游戏分类 != null ? game.游戏分类.分类名称 : 'N/A'}">分类示例</td>
-                <td th:text="${#temporals.format(game.发行日期, 'yyyy-MM-dd')}">2023-01-01</td>
+                <td th:text="${game.name}">游戏示例</td>
+                <td th:text="${game.category != null ? game.category.name : 'N/A'}">分类示例</td>
+                <td th:text="${#temporals.format(game.releaseDate, 'yyyy-MM-dd')}">2023-01-01</td>
                 <td>
                     <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-info btn-sm" target="_blank">查看</a>
                     <a th:href="@{/admin/games/edit/{id}(id=${game.id})}" class="btn btn-primary btn-sm">编辑</a>

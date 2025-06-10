@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title th:text="${game.游戏名称} + ' - 详情'">游戏详情</title>
+    <title th:text="${game.name} + ' - 详情'">游戏详情</title>
     <style>
         .rating-stars .star {
             font-size: 1.5rem;
@@ -23,13 +23,13 @@
     <div class="row">
         <!-- Game Info Column -->
         <div class="col-md-8">
-            <h1 th:text="${game.游戏名称}">游戏名称</h1>
+            <h1 th:text="${game.name}">游戏名称</h1>
             <hr>
-            <img th:src="${game.图片链接 != null && !game.图片链接.isEmpty() ? game.图片链接 : '/images/game_placeholder.png'}" class="img-fluid rounded mb-3" th:alt="${game.游戏名称}" style="max-height: 400px; width:auto;">
-            <p><strong>分类:</strong> <a th:href="@{/games/category/{id}(id=${game.游戏分类.id})}" th:text="${game.游戏分类.分类名称}">分类名称</a></p>
-            <p><strong>发行日期:</strong> <span th:text="${#temporals.format(game.发行日期, 'yyyy-MM-dd')}">YYYY-MM-DD</span></p>
+            <img th:src="${game.imageUrl != null && !game.imageUrl.isEmpty() ? game.imageUrl : '/images/game_placeholder.png'}" class="img-fluid rounded mb-3" th:alt="${game.name}" style="max-height: 400px; width:auto;">
+            <p><strong>分类:</strong> <a th:href="@{/games/category/{id}(id=${game.category.id})}" th:text="${game.category.name}">分类名称</a></p>
+            <p><strong>发行日期:</strong> <span th:text="${#temporals.format(game.releaseDate, 'yyyy-MM-dd')}">YYYY-MM-DD</span></p>
             <p><strong>描述:</strong></p>
-            <p style="white-space: pre-wrap;" th:text="${game.描述}">游戏描述内容...</p>
+            <p style="white-space: pre-wrap;" th:text="${game.description}">游戏描述内容...</p>
 
             <!-- Collection Button -->
              <div class="my-3" th:if="${session.loggedInUser != null}">
@@ -43,8 +43,6 @@
              <div class="my-3" th:unless="${session.loggedInUser != null}">
                  <p><a th:href="@{/login}">登录</a>后即可收藏游戏。</p>
              </div>
-
-
         </div>
 
         <!-- Rating and Comments Column -->
@@ -64,7 +62,7 @@
                     <h5 class="card-title">评价这款游戏</h5>
                     <form th:action="@{/games/{gameId}/ratings(gameId=${game.id})}" th:object="${newRating}" method="post">
                         <div class="mb-3 rating-stars">
-                            <input type="hidden" name="分数" id="ratingScore" th:value="${userRating > 0 ? userRating : ''}" required>
+                            <input type="hidden" name="score" id="ratingScore" th:value="${userRating > 0 ? userRating : ''}" required>
                             <span class="star" data-value="1" th:classappend="${userRating >= 1 ? 'selected' : ''}">★</span>
                             <span class="star" data-value="2" th:classappend="${userRating >= 2 ? 'selected' : ''}">★</span>
                             <span class="star" data-value="3" th:classappend="${userRating >= 3 ? 'selected' : ''}">★</span>
@@ -94,7 +92,7 @@
                 <form th:action="@{/games/{gameId}/comments(gameId=${game.id})}" th:object="${newComment}" method="post" class="mb-4">
                     <div class="mb-3">
                         <label for="commentContent" class="form-label">发表评论</label>
-                        <textarea class="form-control" id="commentContent" rows="3" th:field="*{评论内容}" required></textarea>
+                        <textarea class="form-control" id="commentContent" rows="3" th:field="*{content}" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">提交评论</button>
                 </form>
@@ -107,11 +105,11 @@
             <div th:if="${!comments.isEmpty()}">
                 <div class="card mb-3" th:each="comment : ${comments}">
                     <div class="card-body">
-                        <p class="card-text" th:text="${comment.评论内容}">评论内容...</p>
+                        <p class="card-text" th:text="${comment.content}">评论内容...</p>
                         <footer class="blockquote-footer">
-                            <span th:text="${comment.用户 != null ? comment.用户.用户名 : '匿名用户'}">用户</span> 于
-                            <span th:text="${#temporals.format(comment.创建时间, 'yyyy-MM-dd HH:mm')}">评论时间</span>
-                            <a th:if="${session.loggedInUser != null && session.loggedInUser.get角色列表().stream().anyMatch(role -> role.get角色名称().equals('管理员'))}"
+                            <span th:text="${comment.user != null ? comment.user.username : '匿名用户'}">用户</span> 于
+                            <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">评论时间</span>
+                            <a th:if="${session.loggedInUser != null && session.loggedInUser.roles.stream().anyMatch(role -> role.name.equals('管理员'))}"
                                th:href="@{/admin/comments/delete/{id}(id=${comment.id})}"
                                class="btn btn-danger btn-sm float-end"
                                onclick="return confirm('确定要删除这条评论吗？');">删除</a>
@@ -130,56 +128,48 @@
             const stars = document.querySelectorAll('.rating-stars .star');
             const ratingScoreInput = document.getElementById('ratingScore');
 
+            // Function to update star visuals based on a score
+            function updateStarsVisual(score) {
+                stars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    if (starValue <= score) {
+                        s.classList.add('selected');
+                        s.style.color = '#ffc107'; // Ensure style matches class
+                    } else {
+                        s.classList.remove('selected');
+                        s.style.color = '#ccc'; // Ensure style matches class
+                    }
+                });
+            }
+
             stars.forEach(star => {
                 star.addEventListener('click', function () {
                     const value = this.getAttribute('data-value');
                     ratingScoreInput.value = value;
-                    stars.forEach(s => {
-                        s.classList.toggle('selected', parseInt(s.getAttribute('data-value')) <= parseInt(value));
-                    });
+                    updateStarsVisual(parseInt(value));
                 });
-                // Hover effect (optional, can be pure CSS too)
-                // Function to update star visuals based on a score
-                function updateStarsVisual(score) {
-                    stars.forEach(s => {
-                        const starValue = parseInt(s.getAttribute('data-value'));
-                        if (starValue <= score) {
-                            s.classList.add('selected');
-                            s.style.color = '#ffc107'; // Ensure style matches class
+
+                star.addEventListener('mouseover', function () {
+                    const hoverValue = parseInt(this.getAttribute('data-value'));
+                    stars.forEach((s, index) => { // Use index for 0-based comparison to hoverValue
+                        // Note: star data-value is 1-based, index is 0-based.
+                        // So, if hoverValue is 3, stars with index 0, 1, 2 should be lit.
+                        if (parseInt(s.getAttribute('data-value')) <= hoverValue) {
+                            s.style.color = '#ffdb58'; // Brighter yellow for hover
                         } else {
-                            s.classList.remove('selected');
-                            s.style.color = '#ccc'; // Ensure style matches class
+                            s.style.color = '#ccc';
                         }
                     });
-                }
-
-                stars.forEach(star => {
-                    star.addEventListener('click', function () {
-                        const value = this.getAttribute('data-value');
-                        ratingScoreInput.value = value;
-                        updateStarsVisual(parseInt(value));
-                    });
-
-                    star.addEventListener('mouseover', function () {
-                        const hoverValue = parseInt(this.getAttribute('data-value'));
-                        stars.forEach((s, index) => { // Use index for 0-based comparison to hoverValue
-                            if (index < hoverValue) {
-                                s.style.color = '#ffdb58'; // Brighter yellow for hover
-                            } else {
-                                s.style.color = '#ccc';
-                            }
-                        });
-                    });
-
-                    star.addEventListener('mouseout', function () {
-                        // On mouseout, revert to the actual current rating stored in the input
-                        updateStarsVisual(parseInt(ratingScoreInput.value) || 0);
-                    });
                 });
 
-                // Initial setup on page load
-                updateStarsVisual(parseInt(ratingScoreInput.value) || 0);
+                star.addEventListener('mouseout', function () {
+                    // On mouseout, revert to the actual current rating stored in the input
+                    updateStarsVisual(parseInt(ratingScoreInput.value) || 0);
+                });
             });
+
+            // Initial setup on page load
+            updateStarsVisual(parseInt(ratingScoreInput.value) || 0);
         });
     </script>
 

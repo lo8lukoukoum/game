@@ -27,10 +27,10 @@
         <!-- Loop through games passed from HomeController -->
         <div class="col" th:each="game : ${games.size() > 6 ? games.subList(0,6) : games}"> <!-- Show max 6 games -->
             <div class="card h-100">
-                <img th:src="${game.图片链接 != null && !game.图片链接.isEmpty() ? game.图片链接 : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.游戏名称}" style="height: 200px; object-fit: cover;">
+                <img th:src="${game.imageUrl != null && !game.imageUrl.isEmpty() ? game.imageUrl : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${game.游戏名称}">游戏名称</h5>
-                    <p class="card-text" th:text="${game.游戏分类 != null ? game.游戏分类.分类名称 : '无分类'}">分类</p>
+                    <h5 class="card-title" th:text="${game.name}">游戏名称</h5>
+                    <p class="card-text" th:text="${game.category != null ? game.category.name : '无分类'}">分类</p>
                     <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-primary">查看详情</a>
                 </div>
             </div>

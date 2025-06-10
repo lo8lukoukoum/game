@@ -4,72 +4,88 @@
 
     <resultMap id="CollectionResultMap" type="com.example.gameshare.model.Collection">
         <id property="id" column="coll_id"/>
-        <result property="用户id" column="coll_用户id"/>
-        <result property="游戏id" column="coll_游戏id"/>
-        <result property="收藏时间" column="coll_收藏时间"/>
-        <association property="用户" javaType="com.example.gameshare.model.User">
+        <result property="userId" column="coll_user_id"/>
+        <result property="gameId" column="coll_game_id"/>
+        <result property="collectedAt" column="coll_collected_at"/>
+        <association property="user" javaType="com.example.gameshare.model.User">
             <id property="id" column="u_id"/>
-            <result property="用户名" column="u_用户名"/>
+            <result property="username" column="u_username"/>
+            <!-- Add other user fields if needed -->
         </association>
-        <association property="游戏" javaType="com.example.gameshare.model.Game">
+        <association property="game" javaType="com.example.gameshare.model.Game">
             <id property="id" column="g_id"/>
-            <result property="游戏名称" column="g_游戏名称"/>
-            <result property="图片链接" column="g_图片链接"/>
+            <result property="name" column="g_name"/>
+            <result property="imageUrl" column="g_image_url"/>
+            <!-- Add other game fields if needed, e.g., category for display -->
+            <association property="category" javaType="com.example.gameshare.model.Category">
+                 <id property="id" column="cat_id"/>
+                 <result property="name" column="cat_name"/>
+            </association>
         </association>
     </resultMap>
 
     <sql id="collectionColumns">
         coll.id as coll_id,
-        coll.用户id as coll_用户id,
-        coll.游戏id as coll_游戏id,
-        coll.收藏时间 as coll_收藏时间
+        coll.user_id as coll_user_id,
+        coll.game_id as coll_game_id,
+        coll.collected_at as coll_collected_at
     </sql>
 
-    <sql id="userBasicColumns">
+    <sql id="userBasicColumnsForCollection"> <!-- Renamed for clarity -->
         u.id as u_id,
-        u.用户名 as u_用户名
+        u.username as u_username
     </sql>
 
-    <sql id="gameBasicColumns">
+    <sql id="gameBasicColumnsForCollection"> <!-- Renamed for clarity -->
         g.id as g_id,
-        g.游戏名称 as g_游戏名称,
-        g.图片链接 as g_图片链接
+        g.name as g_name,
+        g.image_url as g_image_url,
+        g.category_id as g_category_id <!-- Needed for category join -->
+    </sql>
+
+    <sql id="categoryBasicColumnsForCollectionGame">
+        cat.id as cat_id,
+        cat.name as cat_name
     </sql>
 
     <select id="findByUserId" resultMap="CollectionResultMap">
         SELECT
           <include refid="collectionColumns"/>,
-          <include refid="userBasicColumns"/>,
-          <include refid="gameBasicColumns"/>
-        FROM 收藏 coll
-        LEFT JOIN 用户 u ON coll.用户id = u.id
-        LEFT JOIN 游戏 g ON coll.游戏id = g.id
-        WHERE coll.用户id = #{userId}
-        ORDER BY coll.收藏时间 DESC
+          <include refid="userBasicColumnsForCollection"/>,
+          <include refid="gameBasicColumnsForCollection"/>,
+          <include refid="categoryBasicColumnsForCollectionGame"/>
+        FROM collections coll
+        LEFT JOIN users u ON coll.user_id = u.id
+        LEFT JOIN games g ON coll.game_id = g.id
+        LEFT JOIN categories cat ON g.category_id = cat.id
+        WHERE coll.user_id = #{userId}
+        ORDER BY coll.collected_at DESC
     </select>
 
     <select id="findByUserIdAndGameId" resultMap="CollectionResultMap">
         SELECT
           <include refid="collectionColumns"/>,
-          <include refid="userBasicColumns"/>,
-          <include refid="gameBasicColumns"/>
-        FROM 收藏 coll
-        LEFT JOIN 用户 u ON coll.用户id = u.id
-        LEFT JOIN 游戏 g ON coll.游戏id = g.id
-        WHERE coll.用户id = #{userId} AND coll.游戏id = #{gameId}
+          <include refid="userBasicColumnsForCollection"/>,
+          <include refid="gameBasicColumnsForCollection"/>,
+          <include refid="categoryBasicColumnsForCollectionGame"/>
+        FROM collections coll
+        LEFT JOIN users u ON coll.user_id = u.id
+        LEFT JOIN games g ON coll.game_id = g.id
+        LEFT JOIN categories cat ON g.category_id = cat.id
+        WHERE coll.user_id = #{userId} AND coll.game_id = #{gameId}
     </select>
 
     <insert id="insert" parameterType="com.example.gameshare.model.Collection" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO 收藏 (用户id, 游戏id, 收藏时间)
-        VALUES (#{用户id}, #{游戏id}, #{收藏时间, jdbcType=TIMESTAMP})
+        INSERT INTO collections (user_id, game_id, collected_at)
+        VALUES (#{userId}, #{gameId}, #{collectedAt, jdbcType=TIMESTAMP})
     </insert>
 
     <delete id="delete">
-        DELETE FROM 收藏 WHERE id = #{id}
+        DELETE FROM collections WHERE id = #{id}
     </delete>
 
     <delete id="deleteByUserIdAndGameId">
-        DELETE FROM 收藏 WHERE 用户id = #{userId} AND 游戏id = #{gameId}
+        DELETE FROM collections WHERE user_id = #{userId} AND game_id = #{gameId}
     </delete>
 
 </mapper>

@@ -16,11 +16,11 @@
              <form th:action="@{/login}" th:object="${user}" method="post">
                 <div class="mb-3">
                     <label for="username" class="form-label">用户名</label>
-                    <input type="text" class="form-control" id="username" th:field="*{用户名}" required>
+                    <input type="text" class="form-control" id="username" th:field="*{username}" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">密码</label>
-                    <input type="password" class="form-control" id="password" th:field="*{密码}" required>
+                    <input type="password" class="form-control" id="password" th:field="*{password}" required>
                 </div>
                 <button type="submit" class="btn btn-primary">登录</button>
                  <p class="mt-3">

@@ -26,8 +26,8 @@ public class CategoryController {
 
     private boolean isAdmin(HttpSession session) {
         User user = (User) session.getAttribute(USER_SESSION_KEY);
-        if (user == null || user.get角色列表() == null) return false;
-        return user.get角色列表().stream().anyMatch(role -> ADMIN_ROLE_NAME.equals(role.get角色名称()));
+        if (user == null || user.getRoles() == null) return false;
+        return user.getRoles().stream().anyMatch(role -> ADMIN_ROLE_NAME.equals(role.getName()));
     }
 
     @GetMapping("") // Maps to /admin/categories

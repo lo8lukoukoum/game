@@ -21,13 +21,13 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     public Collection addToCollection(Collection collection) {
-        if (collectionMapper.findByUserIdAndGameId(collection.get用户id(), collection.get游戏id()) != null) {
+        if (collectionMapper.findByUserIdAndGameId(collection.getUserId(), collection.getGameId()) != null) {
             throw new RuntimeException("游戏已在收藏中。");
         }
-        collection.set收藏时间(LocalDateTime.now());
+        collection.setCollectedAt(LocalDateTime.now());
         collectionMapper.insert(collection);
         // Fetch again to populate User and Game objects from joins
-        return collectionMapper.findByUserIdAndGameId(collection.get用户id(), collection.get游戏id());
+        return collectionMapper.findByUserIdAndGameId(collection.getUserId(), collection.getGameId());
     }
 
     @Override

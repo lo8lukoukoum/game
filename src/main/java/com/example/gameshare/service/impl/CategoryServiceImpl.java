@@ -21,8 +21,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
-        category.set创建时间(LocalDateTime.now());
-        category.set更新时间(LocalDateTime.now());
+        category.setCreatedAt(LocalDateTime.now());
+        category.setUpdatedAt(LocalDateTime.now());
         categoryMapper.insert(category);
         return category;
     }
@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category updateCategory(Category category) {
-        category.set更新时间(LocalDateTime.now());
+        category.setUpdatedAt(LocalDateTime.now());
         int updatedCount = categoryMapper.update(category);
         if (updatedCount > 0) {
             return categoryMapper.findById(category.getId());

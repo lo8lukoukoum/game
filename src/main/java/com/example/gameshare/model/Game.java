@@ -6,25 +6,25 @@ import java.time.LocalDateTime;
 public class Game {
 
     private Integer id;
-    private String 游戏名称; // game name
-    private String 描述; // description
-    private LocalDate 发行日期; // release_date
-    private String 图片链接; // image_url
-    private Integer 分类id; // category_id
-    private LocalDateTime 创建时间; // create_time
-    private LocalDateTime 更新时间; // update_time
-    private Category 游戏分类; // Category object for join
+    private String name; // Was 游戏名称
+    private String description; // Was 描述
+    private LocalDate releaseDate; // Was 发行日期
+    private String imageUrl; // Was 图片链接
+    private Integer categoryId; // Was 分类id
+    private LocalDateTime createdAt; // Was 创建时间
+    private LocalDateTime updatedAt; // Was 更新时间
+    private Category category; // Was 游戏分类 (Joined object)
 
     // Constructors
     public Game() {
     }
 
-    public Game(String 游戏名称, String 描述, LocalDate 发行日期, String 图片链接, Integer 分类id) {
-        this.游戏名称 = 游戏名称;
-        this.描述 = 描述;
-        this.发行日期 = 发行日期;
-        this.图片链接 = 图片链接;
-        this.分类id = 分类id;
+    public Game(String name, String description, LocalDate releaseDate, String imageUrl, Integer categoryId) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.imageUrl = imageUrl;
+        this.categoryId = categoryId;
     }
 
     // Getters and Setters
@@ -36,82 +36,82 @@ public class Game {
         this.id = id;
     }
 
-    public String get游戏名称() {
-        return 游戏名称;
+    public String getName() {
+        return name;
     }
 
-    public void set游戏名称(String 游戏名称) {
-        this.游戏名称 = 游戏名称;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String get描述() {
-        return 描述;
+    public String getDescription() {
+        return description;
     }
 
-    public void set描述(String 描述) {
-        this.描述 = 描述;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public LocalDate get发行日期() {
-        return 发行日期;
+    public LocalDate getReleaseDate() {
+        return releaseDate;
     }
 
-    public void set发行日期(LocalDate 发行日期) {
-        this.发行日期 = 发行日期;
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
-    public String get图片链接() {
-        return 图片链接;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void set图片链接(String 图片链接) {
-        this.图片链接 = 图片链接;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public Integer get分类id() {
-        return 分类id;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void set分类id(Integer 分类id) {
-        this.分类id = 分类id;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public LocalDateTime get创建时间() {
-        return 创建时间;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void set创建时间(LocalDateTime 创建时间) {
-        this.创建时间 = 创建时间;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime get更新时间() {
-        return 更新时间;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void set更新时间(LocalDateTime 更新时间) {
-        this.更新时间 = 更新时间;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Category get游戏分类() {
-        return 游戏分类;
+    public Category getCategory() {
+        return category;
     }
 
-    public void set游戏分类(Category 游戏分类) {
-        this.游戏分类 = 游戏分类;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
     public String toString() {
         return "Game{" +
                 "id=" + id +
-                ", 游戏名称='" + 游戏名称 + '\'' +
-                ", 描述='" + 描述 + '\'' +
-                ", 发行日期=" + 发行日期 +
-                ", 图片链接='" + 图片链接 + '\'' +
-                ", 分类id=" + 分类id +
-                ", 创建时间=" + 创建时间 +
-                ", 更新时间=" + 更新时间 +
-                ", 游戏分类=" + (游戏分类 != null ? 游戏分类.get分类名称() : "null") +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", categoryId=" + categoryId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", category=" + (category != null ? category.getName() : "null") +
                 '}';
     }
 }

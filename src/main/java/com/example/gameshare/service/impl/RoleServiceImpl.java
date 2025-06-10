@@ -18,8 +18,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role createRole(Role role) {
-        if (roleMapper.findByName(role.get角色名称()) != null) {
-            throw new RuntimeException("角色名称已存在: " + role.get角色名称());
+        if (roleMapper.findByName(role.getName()) != null) {
+            throw new RuntimeException("角色名称已存在: " + role.getName());
         }
         roleMapper.insert(role);
         return role;

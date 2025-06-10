@@ -21,8 +21,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game createGame(Game game) {
-        game.set创建时间(LocalDateTime.now());
-        game.set更新时间(LocalDateTime.now());
+        game.setCreatedAt(LocalDateTime.now());
+        game.setUpdatedAt(LocalDateTime.now());
         gameMapper.insert(game);
         return game;
     }
@@ -44,7 +44,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game updateGame(Game game) {
-        game.set更新时间(LocalDateTime.now());
+        game.setUpdatedAt(LocalDateTime.now());
         int updatedCount = gameMapper.update(game);
         if (updatedCount > 0) {
             return gameMapper.findById(game.getId());

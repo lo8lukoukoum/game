@@ -32,13 +32,13 @@
         <div class="col" th:each="game : ${games}">
             <div class="card h-100 shadow-sm">
                 <a th:href="@{/games/{id}(id=${game.id})}">
-                    <img th:src="${game.图片链接 != null && !game.图片链接.isEmpty() ? game.图片链接 : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.游戏名称}" style="height: 200px; object-fit: cover;">
+                    <img th:src="${game.imageUrl != null && !game.imageUrl.isEmpty() ? game.imageUrl : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.name}" style="height: 200px; object-fit: cover;">
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">
-                        <a th:href="@{/games/{id}(id=${game.id})}" th:text="${game.游戏名称}" class="text-decoration-none">游戏名称</a>
+                        <a th:href="@{/games/{id}(id=${game.id})}" th:text="${game.name}" class="text-decoration-none">游戏名称</a>
                     </h5>
-                    <p class="card-text text-muted" th:text="${game.游戏分类 != null ? game.游戏分类.分类名称 : '无分类'}">分类</p>
+                    <p class="card-text text-muted" th:text="${game.category != null ? game.category.name : '无分类'}">分类</p>
                 </div>
                 <div class="card-footer text-center">
                      <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-primary btn-sm">查看详情</a>

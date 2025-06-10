@@ -21,24 +21,24 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public Rating createOrUpdateRating(Rating rating) {
-        Rating existingRating = ratingMapper.findByUserIdAndGameId(rating.get用户id(), rating.get游戏id());
-        rating.set更新时间(LocalDateTime.now());
+        Rating existingRating = ratingMapper.findByUserIdAndGameId(rating.getUserId(), rating.getGameId());
+        rating.setUpdatedAt(LocalDateTime.now());
         if (existingRating != null) {
             rating.setId(existingRating.getId()); // Set ID for update
             // Preserve original creation time
-            rating.set创建时间(existingRating.get创建时间());
+            rating.setCreatedAt(existingRating.getCreatedAt());
             ratingMapper.update(rating);
         } else {
-            rating.set创建时间(LocalDateTime.now());
+            rating.setCreatedAt(LocalDateTime.now());
             ratingMapper.insert(rating);
         }
         // Fetch the rating by its ID if available (after insert) or by userId/gameId
         if (rating.getId() != null) {
              // A findById method in RatingMapper would be ideal here.
              // For now, we'll re-fetch using userId and gameId as it's guaranteed to be unique.
-             return ratingMapper.findByUserIdAndGameId(rating.get用户id(), rating.get游戏id());
+             return ratingMapper.findByUserIdAndGameId(rating.getUserId(), rating.getGameId());
         }
-        return ratingMapper.findByUserIdAndGameId(rating.get用户id(), rating.get游戏id());
+        return ratingMapper.findByUserIdAndGameId(rating.getUserId(), rating.getGameId());
     }
 
     @Override

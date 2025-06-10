@@ -21,8 +21,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment createComment(Comment comment) {
-        comment.set创建时间(LocalDateTime.now());
-        comment.set更新时间(LocalDateTime.now());
+        comment.setCreatedAt(LocalDateTime.now());
+        comment.setUpdatedAt(LocalDateTime.now());
         commentMapper.insert(comment);
         // To get the user details populated from the join in XML, we might need to fetch it again.
         // Or adjust the insert statement to return the full object (less common with MyBatis for inserts).

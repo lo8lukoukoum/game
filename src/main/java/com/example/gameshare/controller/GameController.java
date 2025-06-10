@@ -41,8 +41,8 @@ public class GameController {
     // --- Helper methods for security ---
     private boolean isAdmin(HttpSession session) {
         User user = (User) session.getAttribute(USER_SESSION_KEY);
-        if (user == null || user.get角色列表() == null) return false;
-        return user.get角色列表().stream().anyMatch(role -> ADMIN_ROLE_NAME.equals(role.get角色名称()));
+        if (user == null || user.getRoles() == null) return false;
+        return user.getRoles().stream().anyMatch(role -> ADMIN_ROLE_NAME.equals(role.getName()));
     }
 
     private User getLoggedInUser(HttpSession session) {
@@ -68,13 +68,13 @@ public class GameController {
         model.addAttribute("comments", commentService.findCommentsByGameId(id));
 
         List<Rating> ratings = ratingService.getRatingByGameId(id);
-        double averageRating = ratings.stream().mapToInt(Rating::get分数).average().orElse(0.0);
+        double averageRating = ratings.stream().mapToInt(Rating::getScore).average().orElse(0.0);
         model.addAttribute("averageRating", averageRating);
         model.addAttribute("ratingsCount", ratings.size());
 
         if (getLoggedInUser(session) != null) {
             Rating userRating = ratingService.getUserRatingForGame(getLoggedInUser(session).getId(), id);
-            model.addAttribute("userRating", userRating != null ? userRating.get分数() : 0);
+            model.addAttribute("userRating", userRating != null ? userRating.getScore() : 0);
             boolean isCollected = collectionService.isGameInUserCollection(getLoggedInUser(session).getId(), id); // collectionService was missing from constructor
             model.addAttribute("isCollected", isCollected);
         } else {

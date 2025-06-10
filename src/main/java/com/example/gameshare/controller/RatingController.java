@@ -48,13 +48,13 @@ public class RatingController {
             return "redirect:/games";
         }
 
-        if (rating.get分数() == null || rating.get分数() < 1 || rating.get分数() > 5) {
+        if (rating.getScore() == null || rating.getScore() < 1 || rating.getScore() > 5) {
             redirectAttributes.addFlashAttribute("errorMessage", "评分必须在1到5之间。");
             return "redirect:/games/" + gameId;
         }
 
-        rating.set游戏id(gameId);
-        rating.set用户id(loggedInUser.getId());
+        rating.setGameId(gameId);
+        rating.setUserId(loggedInUser.getId());
         // Creation and update times are set in the service (createOrUpdateRating)
 
         ratingService.createOrUpdateRating(rating);

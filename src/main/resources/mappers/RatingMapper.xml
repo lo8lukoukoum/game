@@ -4,37 +4,39 @@
 
     <resultMap id="RatingResultMap" type="com.example.gameshare.model.Rating">
         <id property="id" column="id"/>
-        <result property="分数" column="分数"/>
-        <result property="用户id" column="用户id"/>
-        <result property="游戏id" column="游戏id"/>
-        <result property="创建时间" column="创建时间"/>
-        <result property="更新时间" column="更新时间"/>
+        <result property="score" column="score"/>
+        <result property="userId" column="user_id"/>
+        <result property="gameId" column="game_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
     <select id="findByGameId" resultMap="RatingResultMap">
-        SELECT id, 分数, 用户id, 游戏id, 创建时间, 更新时间
-        FROM 评分
-        WHERE 游戏id = #{gameId}
+        SELECT id, score, user_id, game_id, created_at, updated_at
+        FROM ratings
+        WHERE game_id = #{gameId}
     </select>
 
     <select id="findByUserIdAndGameId" resultMap="RatingResultMap">
-        SELECT id, 分数, 用户id, 游戏id, 创建时间, 更新时间
-        FROM 评分
-        WHERE 用户id = #{userId} AND 游戏id = #{gameId}
+        SELECT id, score, user_id, game_id, created_at, updated_at
+        FROM ratings
+        WHERE user_id = #{userId} AND game_id = #{gameId}
     </select>
 
     <insert id="insert" parameterType="com.example.gameshare.model.Rating" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO 评分 (分数, 用户id, 游戏id, 创建时间, 更新时间)
-        VALUES (#{分数}, #{用户id}, #{游戏id}, #{创建时间, jdbcType=TIMESTAMP}, #{更新时间, jdbcType=TIMESTAMP})
+        INSERT INTO ratings (score, user_id, game_id, created_at, updated_at)
+        VALUES (#{score}, #{userId}, #{gameId}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="com.example.gameshare.model.Rating">
-        UPDATE 评分
+        UPDATE ratings
         <set>
-            <if test="分数 != null">分数 = #{分数},</if>
-            <if test="更新时间 != null">更新时间 = #{更新时间, jdbcType=TIMESTAMP},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
         </set>
         WHERE id = #{id}
+        <!-- Or update based on user_id and game_id if ID is not reliably set before update -->
+        <!-- WHERE user_id = #{userId} AND game_id = #{gameId} -->
     </update>
 
 </mapper>

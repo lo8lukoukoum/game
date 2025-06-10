@@ -30,12 +30,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User register(User user) {
-        if (userMapper.findByUsername(user.get用户名()) != null) {
-            throw new RuntimeException("用户名已存在: " + user.get用户名());
+        if (userMapper.findByUsername(user.getUsername()) != null) {
+            throw new RuntimeException("用户名已存在: " + user.getUsername());
         }
         // Save password in plain text as per requirement
-        user.set创建时间(LocalDateTime.now());
-        user.set更新时间(LocalDateTime.now());
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         userMapper.insert(user); // Inserts user and sets the ID
 
         // Assign default role
@@ -46,14 +46,14 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("默认角色 '" + DEFAULT_ROLE_NAME + "' 未找到。请先创建该角色。");
         }
         userMapper.insertUserRole(user.getId(), defaultRole.getId());
-        user.set角色列表(List.of(defaultRole)); // Set the role in the user object
+        user.setRoles(List.of(defaultRole)); // Set the role in the user object
         return user;
     }
 
     @Override
     public User login(String username, String password) {
         User user = userMapper.findByUsername(username);
-        if (user != null && user.get密码().equals(password)) { // Plain text password comparison
+        if (user != null && user.getPassword().equals(password)) { // Plain text password comparison
             // User roles are loaded by findByUsername via UserResultMap
             return user;
         }
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        user.set更新时间(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         int updatedCount = userMapper.update(user);
         if (updatedCount > 0) {
             return userMapper.findById(user.getId());
@@ -109,8 +109,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Role> findUserRoles(Integer userId) {
         User user = userMapper.findById(userId);
-        if (user != null && user.get角色列表() != null) {
-            return user.get角色列表();
+        if (user != null && user.getRoles() != null) {
+            return user.getRoles();
         }
         // Fallback or alternative way if roles are not eagerly fetched by findById or if separate fetch is desired
         return userMapper.findRolesByUserId(userId);

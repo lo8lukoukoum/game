@@ -8,36 +8,36 @@
 <body>
 
 <div layout:fragment="content">
-    <h1 th:text="${game.id == null ? '添加新游戏' : '编辑游戏: ' + game.游戏名称}">游戏表单</h1>
+    <h1 th:text="${game.id == null ? '添加新游戏' : '编辑游戏: ' + game.name}">游戏表单</h1>
     <hr>
     <form th:action="${game.id == null ? '/admin/games/new' : '/admin/games/edit'}" th:object="${game}" method="post">
         <input type="hidden" th:field="*{id}" th:if="${game.id != null}" />
-        <input type="hidden" th:field="*{创建时间}" th:if="${game.id != null}" /> <!-- Preserve creation time on edit -->
+        <input type="hidden" th:field="*{createdAt}" th:if="${game.id != null}" /> <!-- Preserve creation time on edit -->
 
         <div class="mb-3">
             <label for="gameName" class="form-label">游戏名称</label>
-            <input type="text" class="form-control" id="gameName" th:field="*{游戏名称}" required>
+            <input type="text" class="form-control" id="gameName" th:field="*{name}" required>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">描述</label>
-            <textarea class="form-control" id="description" rows="5" th:field="*{描述}"></textarea>
+            <textarea class="form-control" id="description" rows="5" th:field="*{description}"></textarea>
         </div>
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="releaseDate" class="form-label">发行日期</label>
-                <input type="date" class="form-control" id="releaseDate" th:field="*{发行日期}">
+                <input type="date" class="form-control" id="releaseDate" th:field="*{releaseDate}">
             </div>
             <div class="col-md-6 mb-3">
                 <label for="category" class="form-label">分类</label>
-                <select class="form-select" id="category" th:field="*{分类id}" required>
+                <select class="form-select" id="category" th:field="*{categoryId}" required>
                     <option value="">选择分类</option>
-                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.分类名称}">分类名称</option>
+                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">分类名称</option>
                 </select>
             </div>
         </div>
         <div class="mb-3">
             <label for="imageUrl" class="form-label">图片链接</label>
-            <input type="url" class="form-control" id="imageUrl" th:field="*{图片链接}" placeholder="https://example.com/image.png">
+            <input type="url" class="form-control" id="imageUrl" th:field="*{imageUrl}" placeholder="https://example.com/image.png">
         </div>
 
         <button type="submit" class="btn btn-primary" th:text="${game.id == null ? '创建游戏' : '保存更改'}">提交</button>

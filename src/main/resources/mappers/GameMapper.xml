@@ -4,93 +4,99 @@
 
     <resultMap id="GameResultMap" type="com.example.gameshare.model.Game">
         <id property="id" column="g_id"/>
-        <result property="游戏名称" column="g_游戏名称"/>
-        <result property="描述" column="g_描述"/>
-        <result property="发行日期" column="g_发行日期"/>
-        <result property="图片链接" column="g_图片链接"/>
-        <result property="分类id" column="g_分类id"/>
-        <result property="创建时间" column="g_创建时间"/>
-        <result property="更新时间" column="g_更新时间"/>
-        <association property="游戏分类" javaType="com.example.gameshare.model.Category" resultMap="com.example.gameshare.repository.CategoryMapper.CategoryResultMap" columnPrefix="cat_"/>
+        <result property="name" column="g_name"/>
+        <result property="description" column="g_description"/>
+        <result property="releaseDate" column="g_release_date"/>
+        <result property="imageUrl" column="g_image_url"/>
+        <result property="categoryId" column="g_category_id"/>
+        <result property="createdAt" column="g_created_at"/>
+        <result property="updatedAt" column="g_updated_at"/>
+        <association property="category" javaType="com.example.gameshare.model.Category">
+            <id property="id" column="cat_id"/>
+            <result property="name" column="cat_name"/>
+            <result property="description" column="cat_description"/>
+            <result property="createdAt" column="cat_created_at"/>
+            <result property="updatedAt" column="cat_updated_at"/>
+        </association>
     </resultMap>
 
     <sql id="gameColumns">
         g.id as g_id,
-        g.游戏名称 as g_游戏名称,
-        g.描述 as g_描述,
-        g.发行日期 as g_发行日期,
-        g.图片链接 as g_图片链接,
-        g.分类id as g_分类id,
-        g.创建时间 as g_创建时间,
-        g.更新时间 as g_更新时间
+        g.name as g_name,
+        g.description as g_description,
+        g.release_date as g_release_date,
+        g.image_url as g_image_url,
+        g.category_id as g_category_id,
+        g.created_at as g_created_at,
+        g.updated_at as g_updated_at
     </sql>
 
-    <sql id="categoryColumns">
+    <sql id="categoryColumnsForGame">
         c.id as cat_id,
-        c.分类名称 as cat_分类名称,
-        c.描述 as cat_描述,
-        c.创建时间 as cat_创建时间,
-        c.更新时间 as cat_更新时间
+        c.name as cat_name,
+        c.description as cat_description,
+        c.created_at as cat_created_at,
+        c.updated_at as cat_updated_at
     </sql>
 
     <select id="findById" resultMap="GameResultMap">
         SELECT
           <include refid="gameColumns"/>,
-          <include refid="categoryColumns"/>
-        FROM 游戏 g
-        LEFT JOIN 游戏分类 c ON g.分类id = c.id
+          <include refid="categoryColumnsForGame"/>
+        FROM games g
+        LEFT JOIN categories c ON g.category_id = c.id
         WHERE g.id = #{id}
     </select>
 
     <select id="findAll" resultMap="GameResultMap">
         SELECT
           <include refid="gameColumns"/>,
-          <include refid="categoryColumns"/>
-        FROM 游戏 g
-        LEFT JOIN 游戏分类 c ON g.分类id = c.id
+          <include refid="categoryColumnsForGame"/>
+        FROM games g
+        LEFT JOIN categories c ON g.category_id = c.id
         ORDER BY g.id
     </select>
 
     <select id="findByCategoryId" resultMap="GameResultMap">
         SELECT
           <include refid="gameColumns"/>,
-          <include refid="categoryColumns"/>
-        FROM 游戏 g
-        LEFT JOIN 游戏分类 c ON g.分类id = c.id
-        WHERE g.分类id = #{categoryId}
+          <include refid="categoryColumnsForGame"/>
+        FROM games g
+        LEFT JOIN categories c ON g.category_id = c.id
+        WHERE g.category_id = #{categoryId}
         ORDER BY g.id
     </select>
 
     <insert id="insert" parameterType="com.example.gameshare.model.Game" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO 游戏 (游戏名称, 描述, 发行日期, 图片链接, 分类id, 创建时间, 更新时间)
-        VALUES (#{游戏名称}, #{描述}, #{发行日期, jdbcType=DATE}, #{图片链接}, #{分类id}, #{创建时间, jdbcType=TIMESTAMP}, #{更新时间, jdbcType=TIMESTAMP})
+        INSERT INTO games (name, description, release_date, image_url, category_id, created_at, updated_at)
+        VALUES (#{name}, #{description}, #{releaseDate, jdbcType=DATE}, #{imageUrl}, #{categoryId}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="com.example.gameshare.model.Game">
-        UPDATE 游戏
+        UPDATE games
         <set>
-            <if test="游戏名称 != null">游戏名称 = #{游戏名称},</if>
-            <if test="描述 != null">描述 = #{描述},</if>
-            <if test="发行日期 != null">发行日期 = #{发行日期, jdbcType=DATE},</if>
-            <if test="图片链接 != null">图片链接 = #{图片链接},</if>
-            <if test="分类id != null">分类id = #{分类id},</if>
-            <if test="更新时间 != null">更新时间 = #{更新时间, jdbcType=TIMESTAMP},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="releaseDate != null">release_date = #{releaseDate, jdbcType=DATE},</if>
+            <if test="imageUrl != null">image_url = #{imageUrl},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
         </set>
         WHERE id = #{id}
     </update>
 
     <delete id="delete">
-        DELETE FROM 游戏 WHERE id = #{id}
+        DELETE FROM games WHERE id = #{id}
     </delete>
 
     <select id="search" resultMap="GameResultMap">
         SELECT
           <include refid="gameColumns"/>,
-          <include refid="categoryColumns"/>
-        FROM 游戏 g
-        LEFT JOIN 游戏分类 c ON g.分类id = c.id
-        WHERE g.游戏名称 LIKE CONCAT('%', #{keyword}, '%')
-           OR g.描述 LIKE CONCAT('%', #{keyword}, '%')
+          <include refid="categoryColumnsForGame"/>
+        FROM games g
+        LEFT JOIN categories c ON g.category_id = c.id
+        WHERE g.name LIKE CONCAT('%', #{keyword}, '%')
+           OR g.description LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY g.id
     </select>
 

@@ -4,23 +4,23 @@
 
     <resultMap id="RoleResultMap" type="com.example.gameshare.model.Role">
         <id property="id" column="id"/>
-        <result property="角色名称" column="角色名称"/>
+        <result property="name" column="name"/>
     </resultMap>
 
     <select id="findById" resultMap="RoleResultMap">
-        SELECT id, 角色名称 FROM 角色 WHERE id = #{id}
+        SELECT id, name FROM roles WHERE id = #{id}
     </select>
 
     <select id="findByName" resultMap="RoleResultMap">
-        SELECT id, 角色名称 FROM 角色 WHERE 角色名称 = #{roleName}
+        SELECT id, name FROM roles WHERE name = #{roleName}
     </select>
 
     <insert id="insert" parameterType="com.example.gameshare.model.Role" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO 角色 (角色名称) VALUES (#{角色名称})
+        INSERT INTO roles (name) VALUES (#{name})
     </insert>
 
     <select id="findAll" resultMap="RoleResultMap">
-        SELECT id, 角色名称 FROM 角色 ORDER BY id
+        SELECT id, name FROM roles ORDER BY id
     </select>
 
 </mapper>

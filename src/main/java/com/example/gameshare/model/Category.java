@@ -5,18 +5,18 @@ import java.time.LocalDateTime;
 public class Category {
 
     private Integer id;
-    private String 分类名称; // category name
-    private String 描述; // description
-    private LocalDateTime 创建时间; // create_time
-    private LocalDateTime 更新时间; // update_time
+    private String name; // Was 分类名称
+    private String description; // Was 描述
+    private LocalDateTime createdAt; // Was 创建时间
+    private LocalDateTime updatedAt; // Was 更新时间
 
     // Constructors
     public Category() {
     }
 
-    public Category(String 分类名称, String 描述) {
-        this.分类名称 = 分类名称;
-        this.描述 = 描述;
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     // Getters and Setters
@@ -28,46 +28,46 @@ public class Category {
         this.id = id;
     }
 
-    public String get分类名称() {
-        return 分类名称;
+    public String getName() {
+        return name;
     }
 
-    public void set分类名称(String 分类名称) {
-        this.分类名称 = 分类名称;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String get描述() {
-        return 描述;
+    public String getDescription() {
+        return description;
     }
 
-    public void set描述(String 描述) {
-        this.描述 = 描述;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public LocalDateTime get创建时间() {
-        return 创建时间;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void set创建时间(LocalDateTime 创建时间) {
-        this.创建时间 = 创建时间;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime get更新时间() {
-        return 更新时间;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void set更新时间(LocalDateTime 更新时间) {
-        this.更新时间 = 更新时间;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
-                ", 分类名称='" + 分类名称 + '\'' +
-                ", 描述='" + 描述 + '\'' +
-                ", 创建时间=" + 创建时间 +
-                ", 更新时间=" + 更新时间 +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

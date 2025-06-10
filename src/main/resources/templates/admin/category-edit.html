@@ -8,19 +8,19 @@
 <body>
 
 <div layout:fragment="content">
-    <h1 th:text="${category.id == null ? '添加新分类' : '编辑分类: ' + category.分类名称}">分类表单</h1>
+    <h1 th:text="${category.id == null ? '添加新分类' : '编辑分类: ' + category.name}">分类表单</h1>
     <hr>
     <form th:action="${category.id == null ? '/admin/categories/new' : '/admin/categories/edit'}" th:object="${category}" method="post">
         <input type="hidden" th:field="*{id}" th:if="${category.id != null}" />
-         <input type="hidden" th:field="*{创建时间}" th:if="${category.id != null}" />
+         <input type="hidden" th:field="*{createdAt}" th:if="${category.id != null}" />
 
         <div class="mb-3">
             <label for="categoryName" class="form-label">分类名称</label>
-            <input type="text" class="form-control" id="categoryName" th:field="*{分类名称}" required>
+            <input type="text" class="form-control" id="categoryName" th:field="*{name}" required>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">描述</label>
-            <textarea class="form-control" id="description" rows="3" th:field="*{描述}"></textarea>
+            <textarea class="form-control" id="description" rows="3" th:field="*{description}"></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary" th:text="${category.id == null ? '创建分类' : '保存更改'}">提交</button>

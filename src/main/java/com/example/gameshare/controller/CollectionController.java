@@ -64,8 +64,8 @@ public class CollectionController {
         }
 
         Collection collection = new Collection();
-        collection.set用户id(loggedInUser.getId());
-        collection.set游戏id(gameId);
+        collection.setUserId(loggedInUser.getId());
+        collection.setGameId(gameId);
         // Collection time is set in service or by default in DB
 
         collectionService.addToCollection(collection);

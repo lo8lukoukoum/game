@@ -33,10 +33,10 @@ public class UserController {
     // --- Helper method for security checks ---
     private boolean isAdmin(HttpSession session) {
         User user = (User) session.getAttribute(USER_SESSION_KEY);
-        if (user == null || user.get角色列表() == null) {
+        if (user == null || user.getRoles() == null) {
             return false;
         }
-        return user.get角色列表().stream().anyMatch(role -> ADMIN_ROLE_NAME.equals(role.get角色名称()));
+        return user.getRoles().stream().anyMatch(role -> ADMIN_ROLE_NAME.equals(role.getName()));
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -84,7 +84,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String processLogin(@ModelAttribute User userForm, HttpSession session, RedirectAttributes redirectAttributes, Model model) {
-        User user = userService.login(userForm.get用户名(), userForm.get密码());
+        User user = userService.login(userForm.getUsername(), userForm.getPassword());
         if (user != null) {
             session.setAttribute(USER_SESSION_KEY, user);
             // User object from service should have roles loaded
@@ -138,7 +138,7 @@ public class UserController {
         List<Role> allRoles = roleService.findAllRoles(); // Assuming RoleService has findAllRoles
         model.addAttribute("allRoles", allRoles);
         // User's current roles (IDs) for checkbox pre-selection
-        List<Integer> userRoleIds = user.get角色列表() != null ? user.get角色列表().stream().map(Role::getId).collect(Collectors.toList()) : List.of();
+        List<Integer> userRoleIds = user.getRoles() != null ? user.getRoles().stream().map(Role::getId).collect(Collectors.toList()) : List.of();
         model.addAttribute("userRoleIds", userRoleIds);
         return "admin/user-edit"; // View: admin/user-edit.html
     }
@@ -155,9 +155,9 @@ public class UserController {
             return "redirect:/admin/users";
         }
         // Preserve creation time and password if not being changed in this form
-        user.set创建时间(existingUser.get创建时间());
-        if (user.get密码() == null || user.get密码().isEmpty()) {
-            user.set密码(existingUser.get密码());
+        user.setCreatedAt(existingUser.getCreatedAt());
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            user.setPassword(existingUser.getPassword());
         }
         userService.updateUser(user);
 

@@ -18,18 +18,18 @@
                     <dd class="col-sm-9" th:text="${user.id}">123</dd>
 
                     <dt class="col-sm-3">用户名</dt>
-                    <dd class="col-sm-9" th:text="${user.用户名}">username</dd>
+                    <dd class="col-sm-9" th:text="${user.username}">username</dd>
 
                     <dt class="col-sm-3">邮箱</dt>
-                    <dd class="col-sm-9" th:text="${user.邮箱}">email@example.com</dd>
+                    <dd class="col-sm-9" th:text="${user.email}">email@example.com</dd>
 
                     <dt class="col-sm-3">注册时间</dt>
-                    <dd class="col-sm-9" th:text="${#temporals.format(user.创建时间, 'yyyy-MM-dd HH:mm:ss')}">2023-01-01 10:00:00</dd>
+                    <dd class="col-sm-9" th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2023-01-01 10:00:00</dd>
 
                     <dt class="col-sm-3">角色</dt>
                     <dd class="col-sm-9">
                         <ul>
-                            <li th:each="role : ${user.角色列表}" th:text="${role.角色名称}">角色名</li>
+                            <li th:each="role : ${user.roles}" th:text="${role.name}">角色名</li>
                         </ul>
                     </dd>
                 </dl>

@@ -32,8 +32,8 @@ public class CommentController {
 
     private boolean isAdmin(HttpSession session) {
         User user = (User) session.getAttribute(USER_SESSION_KEY);
-        if (user == null || user.get角色列表() == null) return false;
-        return user.get角色列表().stream().anyMatch(role -> ADMIN_ROLE_NAME.equals(role.get角色名称()));
+        if (user == null || user.getRoles() == null) return false;
+        return user.getRoles().stream().anyMatch(role -> ADMIN_ROLE_NAME.equals(role.getName()));
     }
 
     private User getLoggedInUser(HttpSession session) {
@@ -56,13 +56,13 @@ public class CommentController {
             return "redirect:/games";
         }
 
-        if (comment.get评论内容() == null || comment.get评论内容().trim().isEmpty()) {
+        if (comment.getContent() == null || comment.getContent().trim().isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "评论内容不能为空。");
             return "redirect:/games/" + gameId;
         }
 
-        comment.set游戏id(gameId);
-        comment.set用户id(loggedInUser.getId());
+        comment.setGameId(gameId);
+        comment.setUserId(loggedInUser.getId());
         // Creation and update times are set in service
 
         commentService.createComment(comment);
@@ -83,7 +83,7 @@ public class CommentController {
             return "redirect:/admin/games"; // Or some other relevant admin page
         }
 
-        Integer gameId = comment.get游戏id(); // For redirecting back to the game page or admin game list
+        Integer gameId = comment.getGameId(); // For redirecting back to the game page or admin game list
 
         commentService.deleteComment(id);
         redirectAttributes.addFlashAttribute("successMessage", "评论删除成功。");

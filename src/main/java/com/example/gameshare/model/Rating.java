@@ -5,20 +5,20 @@ import java.time.LocalDateTime;
 public class Rating {
 
     private Integer id;
-    private Integer 分数; // score (e.g., 1-5)
-    private Integer 用户id; // user_id
-    private Integer 游戏id; // game_id
-    private LocalDateTime 创建时间; // create_time
-    private LocalDateTime 更新时间; // update_time
+    private Integer score; // Was 分数
+    private Integer userId; // Was 用户id
+    private Integer gameId; // Was 游戏id
+    private LocalDateTime createdAt; // Was 创建时间
+    private LocalDateTime updatedAt; // Was 更新时间
 
     // Constructors
     public Rating() {
     }
 
-    public Rating(Integer 分数, Integer 用户id, Integer 游戏id) {
-        this.分数 = 分数;
-        this.用户id = 用户id;
-        this.游戏id = 游戏id;
+    public Rating(Integer score, Integer userId, Integer gameId) {
+        this.score = score;
+        this.userId = userId;
+        this.gameId = gameId;
     }
 
     // Getters and Setters
@@ -30,55 +30,55 @@ public class Rating {
         this.id = id;
     }
 
-    public Integer get分数() {
-        return 分数;
+    public Integer getScore() {
+        return score;
     }
 
-    public void set分数(Integer 分数) {
-        this.分数 = 分数;
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
-    public Integer get用户id() {
-        return 用户id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void set用户id(Integer 用户id) {
-        this.用户id = 用户id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Integer get游戏id() {
-        return 游戏id;
+    public Integer getGameId() {
+        return gameId;
     }
 
-    public void set游戏id(Integer 游戏id) {
-        this.游戏id = 游戏id;
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
     }
 
-    public LocalDateTime get创建时间() {
-        return 创建时间;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void set创建时间(LocalDateTime 创建时间) {
-        this.创建时间 = 创建时间;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime get更新时间() {
-        return 更新时间;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void set更新时间(LocalDateTime 更新时间) {
-        this.更新时间 = 更新时间;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public String toString() {
         return "Rating{" +
                 "id=" + id +
-                ", 分数=" + 分数 +
-                ", 用户id=" + 用户id +
-                ", 游戏id=" + 游戏id +
-                ", 创建时间=" + 创建时间 +
-                ", 更新时间=" + 更新时间 +
+                ", score=" + score +
+                ", userId=" + userId +
+                ", gameId=" + gameId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

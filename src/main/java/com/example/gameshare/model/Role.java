@@ -3,14 +3,14 @@ package com.example.gameshare.model;
 public class Role {
 
     private Integer id;
-    private String 角色名称; // role name
+    private String name; // Was 角色名称
 
     // Constructors
     public Role() {
     }
 
-    public Role(String 角色名称) {
-        this.角色名称 = 角色名称;
+    public Role(String name) {
+        this.name = name;
     }
 
     // Getters and Setters
@@ -22,19 +22,19 @@ public class Role {
         this.id = id;
     }
 
-    public String get角色名称() {
-        return 角色名称;
+    public String getName() {
+        return name;
     }
 
-    public void set角色名称(String 角色名称) {
-        this.角色名称 = 角色名称;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", 角色名称='" + 角色名称 + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

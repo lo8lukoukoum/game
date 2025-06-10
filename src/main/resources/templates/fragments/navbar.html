@@ -25,14 +25,14 @@
 
             <ul class="navbar-nav">
                 <!-- Admin dropdown -->
-                <li class="nav-item dropdown" th:if="${session.loggedInUser != null && session.loggedInUser.get角色列表().stream().anyMatch(role -> role.get角色名称().equals('管理员'))}">
+                <li class="nav-item dropdown" th:if="${session.loggedInUser != null && session.loggedInUser.roles.stream().anyMatch(role -> role.name.equals('管理员'))}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarAdminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         管理员后台
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarAdminDropdown">
-                        <li><a class="dropdown-item" th:href="@{/admin/games}">游戏管理</a></li>
-                        <li><a class="dropdown-item" th:href="@{/admin/categories}">分类管理</a></li>
-                        <li><a class="dropdown-item" th:href="@{/admin/users}">用户管理</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/games-list}">游戏管理</a></li> <!-- Corrected path -->
+                        <li><a class="dropdown-item" th:href="@{/admin/categories-list}">分类管理</a></li> <!-- Corrected path -->
+                        <li><a class="dropdown-item" th:href="@{/admin/users-list}">用户管理</a></li> <!-- Corrected path -->
                         <!-- Add other admin links here e.g., comments if a dedicated page exists -->
                     </ul>
                 </li>
@@ -40,7 +40,7 @@
                 <!-- User/Login/Register links -->
                 <li class="nav-item dropdown" th:if="${session.loggedInUser != null}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                       th:text="${session.loggedInUser.用户名}">
+                       th:text="${session.loggedInUser.username}">
                         用户
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">

@@ -4,37 +4,37 @@
 
     <resultMap id="CategoryResultMap" type="com.example.gameshare.model.Category">
         <id property="id" column="id"/>
-        <result property="分类名称" column="分类名称"/>
-        <result property="描述" column="描述"/>
-        <result property="创建时间" column="创建时间"/>
-        <result property="更新时间" column="更新时间"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
     <select id="findById" resultMap="CategoryResultMap">
-        SELECT id, 分类名称, 描述, 创建时间, 更新时间 FROM 游戏分类 WHERE id = #{id}
+        SELECT id, name, description, created_at, updated_at FROM categories WHERE id = #{id}
     </select>
 
     <select id="findAll" resultMap="CategoryResultMap">
-        SELECT id, 分类名称, 描述, 创建时间, 更新时间 FROM 游戏分类 ORDER BY id
+        SELECT id, name, description, created_at, updated_at FROM categories ORDER BY id
     </select>
 
     <insert id="insert" parameterType="com.example.gameshare.model.Category" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO 游戏分类 (分类名称, 描述, 创建时间, 更新时间)
-        VALUES (#{分类名称}, #{描述}, #{创建时间, jdbcType=TIMESTAMP}, #{更新时间, jdbcType=TIMESTAMP})
+        INSERT INTO categories (name, description, created_at, updated_at)
+        VALUES (#{name}, #{description}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
     </insert>
 
     <update id="update" parameterType="com.example.gameshare.model.Category">
-        UPDATE 游戏分类
+        UPDATE categories
         <set>
-            <if test="分类名称 != null">分类名称 = #{分类名称},</if>
-            <if test="描述 != null">描述 = #{描述},</if>
-            <if test="更新时间 != null">更新时间 = #{更新时间, jdbcType=TIMESTAMP},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
         </set>
         WHERE id = #{id}
     </update>
 
     <delete id="delete">
-        DELETE FROM 游戏分类 WHERE id = #{id}
+        DELETE FROM categories WHERE id = #{id}
     </delete>
 
 </mapper>

@@ -28,12 +28,12 @@
         <tbody>
             <tr th:each="user : ${users}">
                 <td th:text="${user.id}">1</td>
-                <td th:text="${user.用户名}">testuser</td>
-                <td th:text="${user.邮箱}">user@example.com</td>
+                <td th:text="${user.username}">testuser</td>
+                <td th:text="${user.email}">user@example.com</td>
                 <td>
-                    <span th:each="role, iterStat : ${user.角色列表}" th:text="${role.角色名称} + (${!iterStat.last} ? ', ' : '')">角色</span>
+                    <span th:each="role, iterStat : ${user.roles}" th:text="${role.name} + (${!iterStat.last} ? ', ' : '')">角色</span>
                 </td>
-                <td th:text="${#temporals.format(user.创建时间, 'yyyy-MM-dd HH:mm')}">2023-01-01 10:00</td>
+                <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}">2023-01-01 10:00</td>
                 <td>
                     <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn btn-primary btn-sm">编辑角色</a>
                     <a th:href="@{/admin/users/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm"

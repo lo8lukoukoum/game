@@ -5,21 +5,21 @@ import java.time.LocalDateTime;
 public class Comment {
 
     private Integer id;
-    private String 评论内容; // content
-    private Integer 用户id; // user_id
-    private Integer 游戏id; // game_id
-    private LocalDateTime 创建时间; // create_time
-    private LocalDateTime 更新时间; // update_time
-    private User 用户; // User object for join
+    private String content; // Was 评论内容
+    private Integer userId; // Was 用户id
+    private Integer gameId; // Was 游戏id
+    private LocalDateTime createdAt; // Was 创建时间
+    private LocalDateTime updatedAt; // Was 更新时间
+    private User user; // Was 用户 (Joined object)
 
     // Constructors
     public Comment() {
     }
 
-    public Comment(String 评论内容, Integer 用户id, Integer 游戏id) {
-        this.评论内容 = 评论内容;
-        this.用户id = 用户id;
-        this.游戏id = 游戏id;
+    public Comment(String content, Integer userId, Integer gameId) {
+        this.content = content;
+        this.userId = userId;
+        this.gameId = gameId;
     }
 
     // Getters and Setters
@@ -31,64 +31,64 @@ public class Comment {
         this.id = id;
     }
 
-    public String get评论内容() {
-        return 评论内容;
+    public String getContent() {
+        return content;
     }
 
-    public void set评论内容(String 评论内容) {
-        this.评论内容 = 评论内容;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public Integer get用户id() {
-        return 用户id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void set用户id(Integer 用户id) {
-        this.用户id = 用户id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Integer get游戏id() {
-        return 游戏id;
+    public Integer getGameId() {
+        return gameId;
     }
 
-    public void set游戏id(Integer 游戏id) {
-        this.游戏id = 游戏id;
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
     }
 
-    public LocalDateTime get创建时间() {
-        return 创建时间;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void set创建时间(LocalDateTime 创建时间) {
-        this.创建时间 = 创建时间;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime get更新时间() {
-        return 更新时间;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void set更新时间(LocalDateTime 更新时间) {
-        this.更新时间 = 更新时间;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public User get用户() {
-        return 用户;
+    public User getUser() {
+        return user;
     }
 
-    public void set用户(User 用户) {
-        this.用户 = 用户;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
-                ", 评论内容='" + 评论内容 + '\'' +
-                ", 用户id=" + 用户id +
-                ", 游戏id=" + 游戏id +
-                ", 创建时间=" + 创建时间 +
-                ", 更新时间=" + 更新时间 +
-                ", 用户=" + (用户 != null ? 用户.get用户名() : "null") +
+                ", content='" + content + '\'' +
+                ", userId=" + userId +
+                ", gameId=" + gameId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", user=" + (user != null ? user.getUsername() : "null") +
                 '}';
     }
 }
