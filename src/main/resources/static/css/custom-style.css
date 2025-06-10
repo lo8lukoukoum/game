@@ -1,0 +1,79 @@
+/* Custom global styles can go here */
+body {
+    padding-top: 56px; /* Adjust if navbar is fixed-top, should match navbar height */
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+    font-size: 16px; /* Base font size */
+    line-height: 1.6; /* Improved line spacing for readability */
+    color: #2c3e50; /* Softer black, often used in Flatly-like themes, or #333 */
+    background-color: #f8f9fa; /* A very light grey background for subtle contrast if needed */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+    font-weight: 500; /* Slightly bolder for headings, Noto Sans SC has 500 weight */
+    color: #34495e; /* Darker heading color */
+}
+
+/* Ensure form elements inherit the body font */
+input, textarea, select, button {
+    font-family: inherit;
+    font-size: inherit; /* Ensure form elements match body font size or have their own appropriate size */
+}
+
+/* Example: Link color - Flatly theme might handle this well, but can be overridden */
+/* a {
+    color: #2c81ba; /* A common link color that fits Flatly aesthetics */
+/* } */
+
+/* Example: Improve card styling slightly if needed */
+.card {
+    border: 1px solid #e0e0e0; /* Softer border for cards */
+}
+
+/* Navbar height adjustment if fixed-top, should match the actual height of the navbar */
+/* For a standard Bootstrap navbar, 56px is common. If it's taller, adjust padding-top for body. */
+
+/* Override Bootstrap's default alert text color for better contrast with Flatly if needed */
+.alert-success {
+    color: #0f5132; /* Darker green for success text for better readability */
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+.alert-danger {
+    color: #58151c; /* Darker red for danger text */
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.alert-info {
+    color: #055160; /* Darker blue for info text */
+    background-color: #cff4fc;
+    border-color: #b6effb;
+}
+
+.alert-warning {
+    color: #664d03; /* Darker yellow for warning text */
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+/* Spacing adjustments */
+h1, .h1 { margin-bottom: 1.5rem; }
+h2, .h2 { margin-bottom: 1.25rem; }
+h3, .h3 { margin-bottom: 1rem; }
+h4, .h4 { margin-bottom: 0.75rem; }
+h5, .h5 { margin-bottom: 0.5rem; }
+h6, .h6 { margin-bottom: 0.5rem; }
+
+hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.section-spacer {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}

@@ -41,8 +41,10 @@
                         </label>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">保存角色</button>
-                <a th:href="@{/admin/users}" class="btn btn-secondary">取消</a>
+                <div class="mt-3"> <!-- Added wrapper for button spacing -->
+                    <button type="submit" class="btn btn-primary me-2"><i class="bi bi-check-circle-fill me-1"></i>保存角色</button>
+                    <a th:href="@{/admin/users-list}" class="btn btn-secondary"><i class="bi bi-x-circle me-1"></i>取消</a>
+                </div>
             </form>
         </div>
     </div>

@@ -13,8 +13,8 @@
         <p class="lead">抱歉，您没有权限访问此页面或执行此操作。</p>
         <p>如果您认为这是一个错误，请联系管理员。</p>
         <hr class="my-4">
-        <a th:href="@{/}" class="btn btn-primary btn-lg">返回首页</a>
-        <a th:href="@{/login}" class="btn btn-secondary btn-lg" th:if="${session.loggedInUser == null}">登录</a>
+        <a th:href="@{/}" class="btn btn-primary btn-lg"><i class="bi bi-house-door-fill me-1"></i>返回首页</a>
+        <a th:href="@{/login}" class="btn btn-secondary btn-lg" th:if="${session.loggedInUser == null}"><i class="bi bi-box-arrow-in-right me-1"></i>登录</a>
     </div>
 </div>
 

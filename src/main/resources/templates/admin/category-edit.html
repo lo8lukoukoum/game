@@ -23,8 +23,13 @@
             <textarea class="form-control" id="description" rows="3" th:field="*{description}"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary" th:text="${category.id == null ? '创建分类' : '保存更改'}">提交</button>
-        <a th:href="@{/admin/categories}" class="btn btn-secondary">取消</a>
+        <div class="mt-4"> <!-- Added wrapper for button spacing -->
+            <button type="submit" class="btn btn-primary me-2">
+                 <i th:class="${category.id == null ? 'bi bi-plus-circle-fill me-1' : 'bi bi-check-circle-fill me-1'}"></i>
+                 <span th:text="${category.id == null ? '创建分类' : '保存更改'}">提交</span>
+            </button>
+            <a th:href="@{/admin/categories-list}" class="btn btn-secondary"><i class="bi bi-x-circle me-1"></i>取消</a>
+        </div>
     </form>
 </div>
 

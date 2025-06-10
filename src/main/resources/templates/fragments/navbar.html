@@ -12,14 +12,14 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">首页</a>
+                    <a class="nav-link" th:href="@{/}"><i class="bi bi-house-door-fill me-1"></i>首页</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/games}">游戏列表</a>
+                    <a class="nav-link" th:href="@{/games-list}"><i class="bi bi-controller me-1"></i>游戏列表</a>
                 </li>
                 <!-- User-specific links -->
                 <li class="nav-item" th:if="${session.loggedInUser != null}">
-                    <a class="nav-link" th:href="@{/my-collections}">我的收藏</a>
+                    <a class="nav-link" th:href="@{/my-collections}"><i class="bi bi-collection-fill me-1"></i>我的收藏</a>
                 </li>
             </ul>
 
@@ -27,34 +27,33 @@
                 <!-- Admin dropdown -->
                 <li class="nav-item dropdown" th:if="${session.loggedInUser != null && session.loggedInUser.roles.stream().anyMatch(role -> role.name.equals('管理员'))}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarAdminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        管理员后台
+                        <i class="bi bi-gear-fill me-1"></i>管理员后台
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarAdminDropdown">
-                        <li><a class="dropdown-item" th:href="@{/admin/games-list}">游戏管理</a></li> <!-- Corrected path -->
-                        <li><a class="dropdown-item" th:href="@{/admin/categories-list}">分类管理</a></li> <!-- Corrected path -->
-                        <li><a class="dropdown-item" th:href="@{/admin/users-list}">用户管理</a></li> <!-- Corrected path -->
+                        <li><a class="dropdown-item" th:href="@{/admin/games-list}"><i class="bi bi-joystick me-1"></i>游戏管理</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/categories-list}"><i class="bi bi-tags-fill me-1"></i>分类管理</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/users-list}"><i class="bi bi-people-fill me-1"></i>用户管理</a></li>
                         <!-- Add other admin links here e.g., comments if a dedicated page exists -->
                     </ul>
                 </li>
 
                 <!-- User/Login/Register links -->
                 <li class="nav-item dropdown" th:if="${session.loggedInUser != null}">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                       th:text="${session.loggedInUser.username}">
-                        用户
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-1"></i><span th:text="${session.loggedInUser.username}">用户</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                        <li><a class="dropdown-item" th:href="@{/profile}">个人资料</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profile}"><i class="bi bi-person-vcard-fill me-1"></i>个人资料</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" th:href="@{/logout}">注销</a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}"><i class="bi bi-box-arrow-right me-1"></i>注销</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item" th:if="${session.loggedInUser == null}">
-                    <a class="nav-link" th:href="@{/login}">登录</a>
+                    <a class="nav-link" th:href="@{/login}"><i class="bi bi-box-arrow-in-right me-1"></i>登录</a>
                 </li>
                 <li class="nav-item" th:if="${session.loggedInUser == null}">
-                    <a class="nav-link" th:href="@{/register}">注册</a>
+                    <a class="nav-link" th:href="@{/register}"><i class="bi bi-person-plus-fill me-1"></i>注册</a>
                 </li>
             </ul>
         </div>

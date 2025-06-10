@@ -34,10 +34,10 @@
             <!-- Collection Button -->
              <div class="my-3" th:if="${session.loggedInUser != null}">
                 <form th:if="${!isCollected}" th:action="@{/collections/add/{gameId}(gameId=${game.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-success"><i class="bi bi-bookmark-plus"></i> 添加到收藏</button>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-bookmark-plus-fill me-1"></i>添加到收藏</button>
                 </form>
                 <form th:if="${isCollected}" th:action="@{/collections/remove/{gameId}(gameId=${game.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-bookmark-dash"></i> 从收藏移除</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-bookmark-dash-fill me-1"></i>从收藏移除</button>
                 </form>
             </div>
              <div class="my-3" th:unless="${session.loggedInUser != null}">
@@ -50,7 +50,7 @@
             <!-- Average Rating Display -->
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">游戏评分</h5>
+                    <h5 class="card-title"><i class="bi bi-graph-up me-1"></i>游戏评分</h5>
                     <p class="card-text display-6" th:text="${averageRating > 0.0 ? #numbers.formatDecimal(averageRating, 1, 1) : '暂无评分'}">4.5</p>
                     <p class="text-muted" th:text="'基于 ' + ${ratingsCount} + '份评分'">基于 X 份评分</p>
                 </div>
@@ -59,7 +59,7 @@
             <!-- User Rating Form -->
             <div class="card mb-3" th:if="${session.loggedInUser != null}">
                 <div class="card-body">
-                    <h5 class="card-title">评价这款游戏</h5>
+                    <h5 class="card-title"><i class="bi bi-star-half me-1"></i>评价这款游戏</h5>
                     <form th:action="@{/games/{gameId}/ratings(gameId=${game.id})}" th:object="${newRating}" method="post">
                         <div class="mb-3 rating-stars">
                             <input type="hidden" name="score" id="ratingScore" th:value="${userRating > 0 ? userRating : ''}" required>
@@ -69,7 +69,7 @@
                             <span class="star" data-value="4" th:classappend="${userRating >= 4 ? 'selected' : ''}">★</span>
                             <span class="star" data-value="5" th:classappend="${userRating >= 5 ? 'selected' : ''}">★</span>
                         </div>
-                        <button type="submit" class="btn btn-primary">提交评分</button>
+                        <button type="submit" class="btn btn-primary mt-2"><i class="bi bi-star-fill me-1"></i>提交评分</button>
                     </form>
                 </div>
             </div>
@@ -86,7 +86,7 @@
     <!-- Comments Section -->
     <div class="row mt-4">
         <div class="col-md-12">
-            <h3>评论区</h3>
+            <h3><i class="bi bi-chat-left-text-fill me-1"></i>评论区</h3>
             <!-- New Comment Form -->
             <div th:if="${session.loggedInUser != null}">
                 <form th:action="@{/games/{gameId}/comments(gameId=${game.id})}" th:object="${newComment}" method="post" class="mb-4">
@@ -94,7 +94,7 @@
                         <label for="commentContent" class="form-label">发表评论</label>
                         <textarea class="form-control" id="commentContent" rows="3" th:field="*{content}" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">提交评论</button>
+                    <button type="submit" class="btn btn-primary mt-2"><i class="bi bi-send-fill me-1"></i>提交评论</button>
                 </form>
             </div>
             <div th:unless="${session.loggedInUser != null}" class="mb-4">
@@ -112,7 +112,7 @@
                             <a th:if="${session.loggedInUser != null && session.loggedInUser.roles.stream().anyMatch(role -> role.name.equals('管理员'))}"
                                th:href="@{/admin/comments/delete/{id}(id=${comment.id})}"
                                class="btn btn-danger btn-sm float-end"
-                               onclick="return confirm('确定要删除这条评论吗？');">删除</a>
+                               onclick="return confirm('确定要删除这条评论吗？');"><i class="bi bi-trash-fill me-1"></i>删除</a>
                         </footer>
                     </div>
                 </div>

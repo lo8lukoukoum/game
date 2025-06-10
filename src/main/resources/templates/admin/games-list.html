@@ -11,7 +11,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>游戏管理</h1>
         <a th:href="@{/admin/games/new}" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> 添加新游戏
+            <i class="bi bi-plus-circle-fill me-1"></i> 添加新游戏
         </a>
     </div>
     <hr>
@@ -33,10 +33,9 @@
                 <td th:text="${game.category != null ? game.category.name : 'N/A'}">分类示例</td>
                 <td th:text="${#temporals.format(game.releaseDate, 'yyyy-MM-dd')}">2023-01-01</td>
                 <td>
-                    <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-info btn-sm" target="_blank">查看</a>
-                    <a th:href="@{/admin/games/edit/{id}(id=${game.id})}" class="btn btn-primary btn-sm">编辑</a>
-                    <a th:href="@{/admin/games/delete/{id}(id=${game.id})}" class="btn btn-danger btn-sm"
-                       onclick="return confirm('确定要删除这个游戏吗？相关的评论、评分和收藏也会受到影响。');">删除</a>
+                    <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-info btn-sm me-1" target="_blank"><i class="bi bi-eye-fill me-1"></i>查看</a>
+                    <a th:href="@{/admin/games/edit/{id}(id=${game.id})}" class="btn btn-warning btn-sm me-1"><i class="bi bi-pencil-square me-1"></i>编辑</a>
+                    <a th:href="@{/admin/games/delete/{id}(id=${game.id})}" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill me-1"></i>删除</a>
                 </td>
             </tr>
         </tbody>
