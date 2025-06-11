@@ -8,8 +8,8 @@
 <body>
 
 <div layout:fragment="content">
-    <h1 th:text="${game.id == null ? '添加新游戏' : '编辑游戏: ' + game.name}">游戏表单</h1>
-    <hr>
+    <h1 class="admin-page-title" th:text="${game.id == null ? '添加新游戏' : '编辑游戏: ' + game.name}">游戏表单</h1>
+    <!-- <hr> Replaced by border-bottom in admin-page-title -->
     <form th:action="${game.id == null ? '/admin/games/new' : '/admin/games/edit'}" th:object="${game}" method="post">
         <input type="hidden" th:field="*{id}" th:if="${game.id != null}" />
         <input type="hidden" th:field="*{createdAt}" th:if="${game.id != null}" /> <!-- Preserve creation time on edit -->

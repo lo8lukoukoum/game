@@ -1,6 +1,6 @@
 /* Custom global styles can go here */
 body {
-    padding-top: 56px; /* Adjust if navbar is fixed-top, should match navbar height */
+    padding-top: 70px; /* Adjusted for potentially taller custom navbar */
     font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
     font-size: 16px; /* Base font size */
     line-height: 1.6; /* Improved line spacing for readability */
@@ -20,18 +20,7 @@ input, textarea, select, button {
     font-size: inherit; /* Ensure form elements match body font size or have their own appropriate size */
 }
 
-/* Example: Link color - Flatly theme might handle this well, but can be overridden */
-/* a {
-    color: #2c81ba; /* A common link color that fits Flatly aesthetics */
-/* } */
-
-/* Example: Improve card styling slightly if needed */
-.card {
-    border: 1px solid #e0e0e0; /* Softer border for cards */
-}
-
 /* Navbar height adjustment if fixed-top, should match the actual height of the navbar */
-/* For a standard Bootstrap navbar, 56px is common. If it's taller, adjust padding-top for body. */
 
 /* Override Bootstrap's default alert text color for better contrast with Flatly if needed */
 .alert-success {
@@ -66,14 +55,332 @@ h4, .h4 { margin-bottom: 0.75rem; }
 h5, .h5 { margin-bottom: 0.5rem; }
 h6, .h6 { margin-bottom: 0.5rem; }
 
-hr {
+hr { /* General hr styling */
     margin-top: 2rem;
     margin-bottom: 2rem;
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
+/* More specific hr for game details page */
+.game-details-hr {
+    margin-top: 2.5rem !important;
+    margin-bottom: 2.5rem !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.15) !important;
+}
+
 
 .section-spacer {
     margin-top: 2rem;
     margin-bottom: 2rem;
+}
+
+/* Custom Dark Navbar */
+#mainNavbar {
+    background-color: #343a40 !important; /* Dark grey/black */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+#mainNavbar .navbar-brand {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #fff !important;
+}
+#mainNavbar .navbar-nav .nav-link {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.8) !important;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    transition: color 0.2s ease;
+}
+#mainNavbar .navbar-nav .nav-link:hover,
+#mainNavbar .navbar-nav .nav-link:focus {
+    color: #fff !important;
+}
+#mainNavbar .navbar-nav .nav-link.active { /* For active state indication */
+    color: #fff !important;
+    font-weight: bold;
+}
+#mainNavbar .navbar-nav .nav-link .bi {
+    vertical-align: text-bottom;
+    margin-right: 8px;
+}
+#mainNavbar .navbar-toggler {
+    border-color: rgba(255,255,255,0.1) !important;
+}
+#mainNavbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Hero Section Styling */
+.hero-section {
+    background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+    color: #ffffff;
+    padding: 6rem 0;
+}
+
+.hero-section .container {
+    /* No specific styles needed here if it's just for alignment */
+}
+
+.hero-section .hero-title {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.hero-section .hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+}
+
+.hero-section .hero-button,
+.hero-section .hero-button-outline {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hero-section .hero-button {
+    background-color: #fff;
+    color: #007bff;
+    border-color: #fff;
+}
+.hero-section .hero-button:hover {
+    background-color: #f0f0f0;
+    color: #0056b3;
+    border-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.hero-section .hero-button-outline {
+    border-color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.9);
+}
+.hero-section .hero-button-outline:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.section-title {
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 2rem !important;
+}
+
+/* Custom Game Card Styling */
+.card.game-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.card.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card.game-card .card-img-top {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card.game-card .card-body {
+    padding: 1.25rem;
+}
+
+.card.game-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 0.5rem;
+}
+
+.card.game-card .card-text {
+    font-size: 0.85rem;
+    color: #566573;
+    margin-bottom: 1rem;
+}
+
+.card.game-card .btn {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+.card.game-card .game-category-badge {
+    font-size: 0.8rem;
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    background-color: #e9ecef;
+    color: #495057;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+}
+
+/* Custom Form Element Styling */
+.form-control,
+.form-select {
+    border-radius: 8px; /* Softer, more modern border radius */
+    border: 1px solid #ced4da; /* Standard Bootstrap border color, can be customized */
+    padding: 0.75rem 1rem; /* Slightly more generous padding */
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: none; /* Remove default Bootstrap focus shadow if we add our own */
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #007bff; /* Primary color for focus border (Flatly uses this blue) */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Standard Bootstrap focus glow */
+}
+
+.form-control::placeholder {
+    color: #888;
+    opacity: 1; /* Firefox fix */
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057; /* Darker label text */
+    margin-bottom: 0.5rem; /* Default is often 0.5rem, this ensures it */
+}
+
+.btn { /* Global button enhancements */
+    border-radius: 8px; /* Consistent with form inputs */
+    padding: 0.6rem 1.2rem;
+    font-weight: 500; /* Default was often 400 for some buttons */
+    transition: all 0.25s ease-out; /* Standardized transition */
+    letter-spacing: 0.02em;
+}
+
+.btn:hover {
+    /* transform: translateY(-1px); /* Apply this selectively if needed */
+}
+
+.form-check-input:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.form-check-label {
+    color: #495057;
+}
+
+/* Game Details Page Specific Styling */
+.game-main-info-section .game-cover-image {
+    max-height: 450px;
+    width: 100%; /* Ensure it scales within its column */
+    object-fit: cover;
+    border-radius: 0.5rem; /* Match card/component rounding */
+}
+
+.game-main-info-section .game-title-detail {
+    font-size: 2.5rem; /* Adjusted from 2.8rem for balance */
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #343a40;
+}
+
+.game-main-info-section .game-category-detail {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #566573; /* Softer color for meta info */
+}
+.game-main-info-section .game-category-detail .bi {
+    color: #007bff; /* Primary color for icons in this line */
+}
+
+
+.game-main-info-section .game-description-detail {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #34495e; /* Consistent with body text or slightly darker */
+    white-space: pre-wrap; /* Preserve line breaks from description */
+}
+
+.ratings-section .section-subtitle,
+.comments-section .section-subtitle {
+    font-size: 1.6rem; /* Adjusted from 1.8rem */
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #007bff; /* Primary color underline, slightly thicker */
+    padding-bottom: 0.6rem;
+    display: inline-block;
+}
+
+.average-rating-display {
+    font-size: 1.1rem; /* Adjusted from 1.2rem */
+    color: #495057;
+}
+.average-rating-display .static-stars {
+    display: inline-block;
+    font-size: 1.3rem; /* Adjusted from 1.5rem */
+    color: #ffc107;
+}
+.average-rating-display .static-stars .bi { /* General icon within static-stars */
+    margin-right: 1px; /* Reduced from 2px */
+}
+
+.rating-form, .comment-form {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); /* Softer shadow */
+    margin-top: 1.5rem; /* Ensure spacing if not already there */
+}
+.rating-form h5, .comment-form h5 { /* Styling for form titles */
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #34495e;
+}
+
+
+.comment-list .comment-item {
+    background-color: #fff;
+    /* border, rounded, shadow-sm are Bootstrap classes, a light shadow is good */
+}
+
+.comment-list .comment-item .comment-author {
+    font-size: 1.05rem; /* Adjusted */
+    color: #0056b3;
+}
+.comment-list .comment-item .comment-date {
+    font-size: 0.8rem; /* Adjusted */
+}
+.comment-list .comment-item .comment-content {
+    font-size: 0.95rem; /* Adjusted */
+    line-height: 1.6;
+    color: #34495e; /* Consistent dark text */
+}
+
+/* Admin Area Polish */
+.admin-page-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #343a40; /* Dark title */
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #6c757d; /* Secondary color underline for admin titles */
+    padding-bottom: 0.5rem;
+}
+
+.admin-table thead th { /* Add 'admin-table' class to tables in admin area */
+    background-color: #e9ecef; /* Light grey background for admin table headers */
+    color: #212529; /* Dark text */
+    font-weight: 600; /* Bolder header text */
+    border-bottom-width: 2px !important; /* Emphasize bottom border of header, !important to override BS styles */
+    text-transform: uppercase; /* Uppercase header text */
+    letter-spacing: 0.05em; /* Slight letter spacing */
+    font-size: 0.9rem;
 }

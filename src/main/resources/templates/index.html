@@ -3,47 +3,53 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>首页</title>
+    <title>首页 - 游戏分享平台</title>
 </head>
 <body>
 
-<div layout:fragment="content">
-    <div class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-auto mb-4" th:src="@{/images/logo_placeholder.png}" alt="Logo" width="72" height="57"> <!-- Placeholder logo -->
-        <h1 class="display-5 fw-bold">欢迎来到游戏分享平台</h1>
-        <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">在这里，您可以发现新游戏，分享您的游戏体验，并与其他游戏爱好者交流。探索我们的游戏库，阅读评论，并加入社区！</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <a th:href="@{/games-list}" type="button" class="btn btn-primary btn-lg px-4 gap-3"><i class="bi bi-joystick me-1"></i>浏览游戏</a>
-                <a th:href="@{/register}" type="button" class="btn btn-outline-secondary btn-lg px-4" th:if="${session.loggedInUser == null}"><i class="bi bi-person-plus-fill me-1"></i>立即注册</a>
+<th:block layout:fragment="content">
+    <!-- Hero Section -->
+    <div class="hero-section text-center"> <!-- This div should not have py-4 from layout, if layout's content placeholder has it -->
+        <div class="container"> <!-- Inner container for content alignment -->
+            <h1 class="hero-title display-4 fw-bold">探索精彩游戏世界</h1>
+            <p class="hero-subtitle lead mb-4">发现、分享、评论你最喜爱的游戏</p>
+            <div>
+                <a th:href="@{/games-list}" class="btn btn-primary btn-lg me-2 hero-button">
+                    <i class="bi bi-joystick me-2"></i>浏览游戏
+                </a>
+                <a th:href="@{/register}" class="btn btn-outline-light btn-lg hero-button-outline" th:if="${session.loggedInUser == null}">
+                    <i class="bi bi-person-plus-fill me-2"></i>立即注册
+                </a>
             </div>
         </div>
     </div>
 
-    <hr class="my-4">
-
-    <h2>热门游戏</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${!games.isEmpty()}">
-        <!-- Loop through games passed from HomeController -->
-        <div class="col" th:each="game : ${games.size() > 6 ? games.subList(0,6) : games}"> <!-- Show max 6 games -->
-            <div class="card h-100">
-                <img th:src="${game.imageUrl != null && !game.imageUrl.isEmpty() ? game.imageUrl : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.name}" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${game.name}">游戏名称</h5>
-                    <p class="card-text" th:text="${game.category != null ? game.category.name : '无分类'}">分类</p>
-                    <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-primary"><i class="bi bi-search me-1"></i>查看详情</a>
+    <!-- Existing content (e.g., game listings) starts here -->
+    <!-- The py-4 from layout.html's content block will apply to this container if this is the direct child -->
+    <div class="container mt-5"> <!-- Added mt-5 for spacing from hero, py-4 from layout will also apply if this is the fragment root -->
+        <h2 class="mb-4 text-center section-title">热门游戏</h2> <!-- Added section-title for potential styling -->
+        <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${!games.isEmpty()}">
+            <!-- Loop through games passed from HomeController -->
+            <div class="col" th:each="game : ${games.size() > 6 ? games.subList(0,6) : games}"> <!-- Show max 6 games -->
+                <div class="card game-card h-100"> <!-- Added game-card, removed shadow-sm as new style has it -->
+                    <a th:href="@{/games/{id}(id=${game.id})}">
+                        <img th:src="${game.imageUrl != null && !game.imageUrl.isEmpty() ? game.imageUrl : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.name}" style="height: 200px; object-fit: cover;">
+                    </a>
+                    <div class="card-body d-flex flex-column"> <!-- d-flex for footer alignment -->
+                        <h5 class="card-title" th:text="${game.name}">游戏名称</h5>
+                        <p class="card-text text-muted small" th:text="${game.category != null ? game.category.name : '无分类'}">分类</p>
+                        <div class="mt-auto text-center"> <!-- mt-auto to push footer down -->
+                             <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-sm btn-outline-primary"><i class="bi bi-search me-1"></i>查看详情</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div th:if="${games.isEmpty()}" class="alert alert-info mt-4">
+            <p class="mb-0">目前没有热门游戏可展示。</p>
+        </div>
     </div>
-    <div th:if="${games.isEmpty()}">
-        <p>目前没有游戏可展示。</p>
-    </div>
-
-     <!-- Placeholder for logo and game images -->
-    <!-- Create /static/images/logo_placeholder.png and /static/images/game_placeholder.png -->
-
-</div>
+</th:block>
 
 </body>
 </html>

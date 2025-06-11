@@ -30,18 +30,29 @@
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" th:if="${!games.isEmpty()}">
         <div class="col" th:each="game : ${games}">
-            <div class="card h-100 shadow-sm">
+            <div class="card game-card h-100"> <!-- Added game-card, removed shadow-sm -->
                 <a th:href="@{/games/{id}(id=${game.id})}">
                     <img th:src="${game.imageUrl != null && !game.imageUrl.isEmpty() ? game.imageUrl : '/images/game_placeholder.png'}" class="card-img-top" th:alt="${game.name}" style="height: 200px; object-fit: cover;">
                 </a>
-                <div class="card-body">
+                <div class="card-body d-flex flex-column"> <!-- d-flex for footer alignment -->
                     <h5 class="card-title">
                         <a th:href="@{/games/{id}(id=${game.id})}" th:text="${game.name}" class="text-decoration-none">游戏名称</a>
                     </h5>
-                    <p class="card-text text-muted" th:text="${game.category != null ? game.category.name : '无分类'}">分类</p>
+                    <p class="card-text text-muted small" th:text="${game.category != null ? game.category.name : '无分类'}">分类</p> <!-- Added small class -->
+                    <div class="mt-auto text-center"> <!-- mt-auto to push footer down -->
+                        <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-sm btn-outline-primary"><i class="bi bi-search me-1"></i>查看详情</a> <!-- Changed to outline -->
+                    </div>
                 </div>
-                <div class="card-footer text-center">
-                     <a th:href="@{/games/{id}(id=${game.id})}" class="btn btn-primary btn-sm"><i class="bi bi-search me-1"></i>查看详情</a>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-info" th:if="${games.isEmpty()}">
+        <p>没有找到符合条件的游戏。</p>
+    </div>
+</div>
+
+</body>
+</html>
                 </div>
             </div>
         </div>

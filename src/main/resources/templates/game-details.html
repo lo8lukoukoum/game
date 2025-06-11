@@ -3,177 +3,202 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title th:text="${game.name} + ' - 详情'">游戏详情</title>
+    <title th:text="${game.name} + ' - 游戏详情'">游戏详情</title>
+    <!-- Existing star rating CSS can be kept or removed if new CSS covers it -->
     <style>
         .rating-stars .star {
-            font-size: 1.5rem;
+            font-size: 1.5rem; /* User interaction stars */
             color: #ccc;
             cursor: pointer;
+            transition: color 0.2s;
         }
         .rating-stars .star.selected,
-        .rating-stars .star:hover,
-        .rating-stars .star:hover ~ .star { /* Highlight stars on hover */
-            color: #ffc107; /* Bootstrap warning color (yellow) */
+        .rating-stars .star:hover {
+            color: #ffc107;
+        }
+        .static-stars .bi { /* For displaying average rating */
+             margin-right: 1px; /* Minimal spacing */
         }
     </style>
 </head>
 <body>
 
-<div layout:fragment="content">
-    <div class="row">
-        <!-- Game Info Column -->
-        <div class="col-md-8">
-            <h1 th:text="${game.name}">游戏名称</h1>
-            <hr>
-            <img th:src="${game.imageUrl != null && !game.imageUrl.isEmpty() ? game.imageUrl : '/images/game_placeholder.png'}" class="img-fluid rounded mb-3" th:alt="${game.name}" style="max-height: 400px; width:auto;">
-            <p><strong>分类:</strong> <a th:href="@{/games/category/{id}(id=${game.category.id})}" th:text="${game.category.name}">分类名称</a></p>
-            <p><strong>发行日期:</strong> <span th:text="${#temporals.format(game.releaseDate, 'yyyy-MM-dd')}">YYYY-MM-DD</span></p>
-            <p><strong>描述:</strong></p>
-            <p style="white-space: pre-wrap;" th:text="${game.description}">游戏描述内容...</p>
+<th:block layout:fragment="content">
 
-            <!-- Collection Button -->
-             <div class="my-3" th:if="${session.loggedInUser != null}">
-                <form th:if="${!isCollected}" th:action="@{/collections/add/{gameId}(gameId=${game.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-success"><i class="bi bi-bookmark-plus-fill me-1"></i>添加到收藏</button>
-                </form>
-                <form th:if="${isCollected}" th:action="@{/collections/remove/{gameId}(gameId=${game.id})}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-bookmark-dash-fill me-1"></i>从收藏移除</button>
-                </form>
+    <!-- Main Game Info Section -->
+    <div class="game-main-info-section mb-4"> <!-- Reduced bottom margin from mb-5 to mb-4 -->
+        <div class="row">
+            <div class="col-md-5 mb-4 mb-md-0 text-center"> <!-- Added text-center for better image presentation -->
+                <img th:src="${game.imageUrl != null && !game.imageUrl.isEmpty() ? game.imageUrl : '/images/game_placeholder.png'}"
+                     th:alt="${game.name}" class="img-fluid rounded game-cover-image shadow">
             </div>
-             <div class="my-3" th:unless="${session.loggedInUser != null}">
-                 <p><a th:href="@{/login}">登录</a>后即可收藏游戏。</p>
-             </div>
-        </div>
-
-        <!-- Rating and Comments Column -->
-        <div class="col-md-4">
-            <!-- Average Rating Display -->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-graph-up me-1"></i>游戏评分</h5>
-                    <p class="card-text display-6" th:text="${averageRating > 0.0 ? #numbers.formatDecimal(averageRating, 1, 1) : '暂无评分'}">4.5</p>
-                    <p class="text-muted" th:text="'基于 ' + ${ratingsCount} + '份评分'">基于 X 份评分</p>
+            <div class="col-md-7">
+                <h1 class="game-title-detail" th:text="${game.name}">Game Title</h1>
+                <p class="text-muted game-category-detail">
+                    <i class="bi bi-tag-fill me-1"></i>
+                    <span th:text="${game.category != null ? game.category.name : '未分类'}">Category</span>
+                    <span class="mx-2">|</span> <i class="bi bi-calendar3 me-1"></i> 发行日期: <span th:text="${#temporals.format(game.releaseDate, 'yyyy-MM-dd')}">Release Date</span>
+                </p>
+                <div class="game-description-detail mb-4" style="white-space: pre-wrap;" th:text="${game.description}">
+                    Game description here...
                 </div>
-            </div>
 
-            <!-- User Rating Form -->
-            <div class="card mb-3" th:if="${session.loggedInUser != null}">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-star-half me-1"></i>评价这款游戏</h5>
-                    <form th:action="@{/games/{gameId}/ratings(gameId=${game.id})}" th:object="${newRating}" method="post">
-                        <div class="mb-3 rating-stars">
-                            <input type="hidden" name="score" id="ratingScore" th:value="${userRating > 0 ? userRating : ''}" required>
-                            <span class="star" data-value="1" th:classappend="${userRating >= 1 ? 'selected' : ''}">★</span>
-                            <span class="star" data-value="2" th:classappend="${userRating >= 2 ? 'selected' : ''}">★</span>
-                            <span class="star" data-value="3" th:classappend="${userRating >= 3 ? 'selected' : ''}">★</span>
-                            <span class="star" data-value="4" th:classappend="${userRating >= 4 ? 'selected' : ''}">★</span>
-                            <span class="star" data-value="5" th:classappend="${userRating >= 5 ? 'selected' : ''}">★</span>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-2"><i class="bi bi-star-fill me-1"></i>提交评分</button>
+                <!-- Collection Button -->
+                <div class="my-3" th:if="${session.loggedInUser != null}">
+                    <form th:if="${!isCollected}" th:action="@{/collections/add/{gameId}(gameId=${game.id})}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-bookmark-plus-fill me-1"></i> 加入收藏</button>
+                    </form>
+                    <form th:if="${isCollected}" th:action="@{/collections/remove/{gameId}(gameId=${game.id})}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-bookmark-dash-fill me-1"></i> 取消收藏</button>
                     </form>
                 </div>
-            </div>
-             <div class="card mb-3" th:unless="${session.loggedInUser != null}">
-                <div class="card-body">
-                     <p><a th:href="@{/login}">登录</a>后即可评价游戏。</p>
+                <div class="my-3" th:unless="${session.loggedInUser != null}">
+                    <p><a th:href="@{/login}">登录</a>后即可收藏游戏。</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <hr class="my-4">
+    <hr class="my-4"> <!-- Adjusted margin from my-5 to my-4 -->
+
+    <!-- Ratings Section -->
+    <div class="ratings-section mb-4"> <!-- Reduced bottom margin -->
+        <h3 class="section-subtitle"><i class="bi bi-star-half me-2"></i>游戏评分</h3>
+        <div class="average-rating-display mb-3">
+            平均得分: <strong id="averageScoreDisplay" th:text="${averageRating > 0.0 ? #numbers.formatDecimal(averageRating, 1, 1) : '暂无'}">N/A</strong> / 5
+            (<span th:text="${ratingsCount}">0</span>份评分)
+            <div id="staticStarRating" class="static-stars d-inline-block ms-2" th:attr="data-rating=${averageRating != null ? averageRating : 0.0}">
+                <!-- Static stars will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <div th:if="${session.loggedInUser != null}">
+            <form th:action="@{/games/{gameId}/ratings(gameId=${game.id})}" method="post" th:object="${newRating}" class="rating-form p-3 border rounded bg-light">
+                <h5>评价这款游戏:</h5>
+                <div class="mb-2 rating-stars"> <!-- Reduced margin for stars div -->
+                    <input type="hidden" name="score" id="ratingScore" th:field="*{score}" th:value="${userRating > 0 ? userRating : ''}" required>
+                    <span class="star" data-value="1" th:classappend="${userRating >= 1 ? 'selected' : ''}"><i class="bi bi-star"></i></span>
+                    <span class="star" data-value="2" th:classappend="${userRating >= 2 ? 'selected' : ''}"><i class="bi bi-star"></i></span>
+                    <span class="star" data-value="3" th:classappend="${userRating >= 3 ? 'selected' : ''}"><i class="bi bi-star"></i></span>
+                    <span class="star" data-value="4" th:classappend="${userRating >= 4 ? 'selected' : ''}"><i class="bi bi-star"></i></span>
+                    <span class="star" data-value="5" th:classappend="${userRating >= 5 ? 'selected' : ''}"><i class="bi bi-star"></i></span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm mt-2"><i class="bi bi-star-fill me-1"></i> 提交我的评分</button>
+            </form>
+        </div>
+        <div th:unless="${session.loggedInUser != null}" class="alert alert-light text-muted border">
+             <p class="mb-0"><a th:href="@{/login}">登录</a>后即可评价游戏。</p>
+        </div>
+    </div>
+
+    <hr class="my-4"> <!-- Adjusted margin -->
 
     <!-- Comments Section -->
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <h3><i class="bi bi-chat-left-text-fill me-1"></i>评论区</h3>
-            <!-- New Comment Form -->
-            <div th:if="${session.loggedInUser != null}">
-                <form th:action="@{/games/{gameId}/comments(gameId=${game.id})}" th:object="${newComment}" method="post" class="mb-4">
-                    <div class="mb-3">
-                        <label for="commentContent" class="form-label">发表评论</label>
-                        <textarea class="form-control" id="commentContent" rows="3" th:field="*{content}" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-2"><i class="bi bi-send-fill me-1"></i>提交评论</button>
-                </form>
-            </div>
-            <div th:unless="${session.loggedInUser != null}" class="mb-4">
-                <p><a th:href="@{/login}">登录</a>后即可发表评论。</p>
-            </div>
+    <div class="comments-section">
+        <h3 class="section-subtitle"><i class="bi bi-chat-left-text-fill me-2"></i>玩家评论</h3>
 
-            <!-- Existing Comments -->
-            <div th:if="${!comments.isEmpty()}">
-                <div class="card mb-3" th:each="comment : ${comments}">
-                    <div class="card-body">
-                        <p class="card-text" th:text="${comment.content}">评论内容...</p>
-                        <footer class="blockquote-footer">
-                            <span th:text="${comment.user != null ? comment.user.username : '匿名用户'}">用户</span> 于
-                            <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">评论时间</span>
-                            <a th:if="${session.loggedInUser != null && session.loggedInUser.roles.stream().anyMatch(role -> role.name.equals('管理员'))}"
-                               th:href="@{/admin/comments/delete/{id}(id=${comment.id})}"
-                               class="btn btn-danger btn-sm float-end"
-                               onclick="return confirm('确定要删除这条评论吗？');"><i class="bi bi-trash-fill me-1"></i>删除</a>
-                        </footer>
-                    </div>
+        <div th:if="${session.loggedInUser != null}">
+            <form th:action="@{/games/{gameId}/comments(gameId=${game.id})}" method="post" th:object="${newComment}" class="comment-form mt-4 p-3 border rounded bg-light">
+                <h5>发表评论:</h5>
+                <div class="mb-3">
+                    <textarea class="form-control" id="commentContent" rows="3" th:field="*{content}" placeholder="输入您的评论..." required></textarea>
                 </div>
-            </div>
-            <div th:if="${comments.isEmpty()}">
-                <p>还没有评论，快来抢沙发吧！</p>
+                <button type="submit" class="btn btn-primary btn-sm mt-2"><i class="bi bi-send-fill me-1"></i>发表评论</button>
+            </form>
+        </div>
+        <div th:unless="${session.loggedInUser != null}" class="alert alert-light text-muted border mt-4">
+            <p class="mb-0"><a th:href="@{/login}">登录</a>后即可发表评论。</p>
+        </div>
+
+        <div class="comment-list mt-4">
+            <div th:if="${#lists.isEmpty(comments)}" class="alert alert-secondary">暂无评论，快来抢沙发吧！</div>
+            <div th:each="comment : ${comments}" class="comment-item mb-3 p-3 border rounded shadow-sm">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="comment-author fw-bold" th:text="${comment.user != null ? comment.user.username : '匿名用户'}">User</span>
+                    <small class="comment-date text-muted" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">Date</small>
+                </div>
+                <p class="comment-content mt-2 mb-1" th:text="${comment.content}">Comment text.</p>
+                <div class="text-end" th:if="${session.loggedInUser != null && session.loggedInUser.roles.stream().anyMatch(role -> role.name.equals('管理员'))}">
+                     <a th:href="@{/admin/comments/delete/{id}(id=${comment.id})}"
+                           class="btn btn-outline-danger btn-sm py-0 px-1" style="font-size: 0.75rem;"
+                           onclick="return confirm('确定要删除这条评论吗？');"><i class="bi bi-trash-fill"></i> 删除</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+        // Interactive Star Rating Logic
         document.addEventListener('DOMContentLoaded', function () {
-            const stars = document.querySelectorAll('.rating-stars .star');
+            const starsInteractive = document.querySelectorAll('.rating-form .rating-stars .star');
             const ratingScoreInput = document.getElementById('ratingScore');
 
-            // Function to update star visuals based on a score
-            function updateStarsVisual(score) {
-                stars.forEach(s => {
+            function updateInteractiveStarsVisual(score) {
+                starsInteractive.forEach(s => {
                     const starValue = parseInt(s.getAttribute('data-value'));
                     if (starValue <= score) {
+                        s.innerHTML = '<i class="bi bi-star-fill"></i>'; // Filled star
                         s.classList.add('selected');
-                        s.style.color = '#ffc107'; // Ensure style matches class
                     } else {
+                        s.innerHTML = '<i class="bi bi-star"></i>'; // Empty star
                         s.classList.remove('selected');
-                        s.style.color = '#ccc'; // Ensure style matches class
                     }
                 });
             }
 
-            stars.forEach(star => {
-                star.addEventListener('click', function () {
-                    const value = this.getAttribute('data-value');
-                    ratingScoreInput.value = value;
-                    updateStarsVisual(parseInt(value));
-                });
+            if (starsInteractive.length > 0 && ratingScoreInput) {
+                 starsInteractive.forEach(star => {
+                    star.addEventListener('click', function () {
+                        const value = this.getAttribute('data-value');
+                        ratingScoreInput.value = value;
+                        updateInteractiveStarsVisual(parseInt(value));
+                    });
 
-                star.addEventListener('mouseover', function () {
-                    const hoverValue = parseInt(this.getAttribute('data-value'));
-                    stars.forEach((s, index) => { // Use index for 0-based comparison to hoverValue
-                        // Note: star data-value is 1-based, index is 0-based.
-                        // So, if hoverValue is 3, stars with index 0, 1, 2 should be lit.
-                        if (parseInt(s.getAttribute('data-value')) <= hoverValue) {
-                            s.style.color = '#ffdb58'; // Brighter yellow for hover
-                        } else {
-                            s.style.color = '#ccc';
-                        }
+                    star.addEventListener('mouseover', function () {
+                        const hoverValue = parseInt(this.getAttribute('data-value'));
+                        starsInteractive.forEach(s_hover => {
+                            if (parseInt(s_hover.getAttribute('data-value')) <= hoverValue) {
+                                s_hover.innerHTML = '<i class="bi bi-star-fill"></i>';
+                                s_hover.style.color = '#ffc107'; // Ensure hover color
+                            } else {
+                                s_hover.innerHTML = '<i class="bi bi-star"></i>';
+                                s_hover.style.color = '#ccc'; // Reset color
+                            }
+                        });
+                    });
+
+                    star.addEventListener('mouseout', function () {
+                        updateInteractiveStarsVisual(parseInt(ratingScoreInput.value) || 0);
+                         // Reset explicit color to allow CSS to take over
+                        starsInteractive.forEach(s_out => s_out.style.color = '');
                     });
                 });
+                // Initial setup for interactive stars
+                updateInteractiveStarsVisual(parseInt(ratingScoreInput.value) || 0);
+            }
 
-                star.addEventListener('mouseout', function () {
-                    // On mouseout, revert to the actual current rating stored in the input
-                    updateStarsVisual(parseInt(ratingScoreInput.value) || 0);
-                });
-            });
-
-            // Initial setup on page load
-            updateStarsVisual(parseInt(ratingScoreInput.value) || 0);
+            // Static Average Star Rating Logic
+            const staticStarContainer = document.getElementById('staticStarRating');
+            if (staticStarContainer) {
+                const rating = parseFloat(staticStarContainer.getAttribute('data-rating'));
+                let starsHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (rating >= i) {
+                        starsHTML += '<i class="bi bi-star-fill"></i>';
+                    } else if (rating >= i - 0.75) { // Adjust threshold for half star if needed, 0.75 makes it more like "at least half"
+                        starsHTML += '<i class="bi bi-star-half"></i>';
+                    } else {
+                        starsHTML += '<i class="bi bi-star"></i>';
+                    }
+                }
+                staticStarContainer.innerHTML = starsHTML;
+            }
         });
+    /*]]>*/
     </script>
 
-</div>
+</th:block>
 
 </body>
 </html>

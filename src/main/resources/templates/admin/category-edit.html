@@ -8,8 +8,8 @@
 <body>
 
 <div layout:fragment="content">
-    <h1 th:text="${category.id == null ? '添加新分类' : '编辑分类: ' + category.name}">分类表单</h1>
-    <hr>
+    <h1 class="admin-page-title" th:text="${category.id == null ? '添加新分类' : '编辑分类: ' + category.name}">分类表单</h1>
+    <!-- <hr> Replaced by border-bottom in admin-page-title -->
     <form th:action="${category.id == null ? '/admin/categories/new' : '/admin/categories/edit'}" th:object="${category}" method="post">
         <input type="hidden" th:field="*{id}" th:if="${category.id != null}" />
          <input type="hidden" th:field="*{createdAt}" th:if="${category.id != null}" />

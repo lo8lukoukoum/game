@@ -8,8 +8,8 @@
 <body>
 
 <div layout:fragment="content">
-    <h1>编辑用户: <span th:text="${user.username}">用户名</span></h1>
-    <hr>
+    <h1 class="admin-page-title">编辑用户: <span th:text="${user.username}">用户名</span></h1>
+    <!-- <hr> Replaced by border-bottom in admin-page-title -->
 
     <div class="row">
         <div class="col-md-6">

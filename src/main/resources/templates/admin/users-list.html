@@ -9,12 +9,12 @@
 
 <div layout:fragment="content">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>用户管理</h1>
+        <h1 class="admin-page-title">用户管理</h1>
         <!-- No "Add New User" through UI for now, registration is public -->
     </div>
-    <hr>
+    <!-- <hr> Replaced by border-bottom in admin-page-title -->
 
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover admin-table">
         <thead>
             <tr>
                 <th>ID</th>
